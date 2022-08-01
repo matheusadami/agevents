@@ -111,21 +111,25 @@ class GraphicWidget extends StatelessWidget {
       child: BlocBuilder<GraphicBloc, GraphicState>(
         builder: (context, state) {
           if (state is ShowedGraphicState) {
-            return PieChart(
-              PieChartData(
-                borderData: FlBorderData(show: false),
-                sectionsSpace: 0,
-                centerSpaceRadius: 0,
-                sections: buildSections(state.graphicModel),
-                pieTouchData: PieTouchData(
-                  touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                    onTouchChart(
-                      event,
-                      pieTouchResponse,
-                      context,
-                      state.graphicModel,
-                    );
-                  },
+            return SizedBox(
+              width: 100,
+              height: 100,
+              child: PieChart(
+                PieChartData(
+                  borderData: FlBorderData(show: false),
+                  sectionsSpace: 5,
+                  centerSpaceRadius: 0,
+                  sections: buildSections(state.graphicModel),
+                  pieTouchData: PieTouchData(
+                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      onTouchChart(
+                        event,
+                        pieTouchResponse,
+                        context,
+                        state.graphicModel,
+                      );
+                    },
+                  ),
                 ),
               ),
             );

@@ -13,10 +13,12 @@ class MyEventsListView extends StatefulWidget {
 }
 
 class _MyEventsListViewState extends State<MyEventsListView> {
+  void onPressedCreateEvent() {
+    Navigator.pushNamed(context, '/createEvent');
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: CalendarAppBar(
         onDateChanged: (value) => print(value),
@@ -59,7 +61,7 @@ class _MyEventsListViewState extends State<MyEventsListView> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        onPressed: () {},
+        onPressed: onPressedCreateEvent,
         child: const Icon(
           FontAwesomeIcons.plus,
           color: AppColors.white,

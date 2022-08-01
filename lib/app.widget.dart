@@ -1,3 +1,4 @@
+import 'package:agevents/app/views/events/create/event.create.view.dart';
 import 'package:agevents/app/views/home/home.view.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/dependency.injection.widget.dart';
@@ -31,6 +32,7 @@ class _AppWidgetState extends State<AppWidget> {
         initialRoute: '/home',
         routes: {
           '/home': (context) => const HomeView(),
+          '/createEvent': (context) => const EventCreateView(),
         },
       ),
     );

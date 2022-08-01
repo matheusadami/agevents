@@ -1,3 +1,7 @@
+import 'package:agevents/core/components/clip.event.type.dart';
+import 'package:agevents/core/components/event.priority.dart';
+import 'package:agevents/core/enums/event.priority.dart';
+import 'package:agevents/core/enums/event.type.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
@@ -60,43 +64,7 @@ class EventSubtitleInfo extends StatelessWidget {
           ],
         ),
         const SizedBox(width: 25),
-        /*
-        const Padding(
-          padding: EdgeInsets.only(
-            left: 24,
-            right: 16,
-          ),
-          child: Icon(
-            FontAwesomeIcons.userGroup,
-            size: 16,
-            color: AppColors.gray,
-          ),
-        ),
-        */
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.red,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 5,
-              vertical: 2,
-            ),
-            child: Center(
-              child: Text(
-                'Alta',
-                style: AppTextStyles.verySmallWhiteSemiBold,
-              ),
-            ),
-          ),
-        ),
-        /*
-        Text(
-          '7 pessoas',
-          style: AppTextStyles.verySmallGraySemiBold,
-        ),
-        */
+        const ClipEventPriority(eventPriority: EventPriority.high),
       ],
     );
   }
@@ -115,35 +83,29 @@ class EventTypeInfo extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          child: Container(
-            color: Theme.of(context).colorScheme.tertiary.withOpacity(0.2),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    FontAwesomeIcons.hammer,
-                    size: 16,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Trabalho',
-                    style: AppTextStyles.verySmallTertiarySemiBold,
-                  ),
-                ],
-              ),
-            ),
-          ),
+        const ClipEventType(
+          eventType: EventType.workEvent,
         ),
+        Row(
+          children: [
+            Icon(
+              FontAwesomeIcons.spinner,
+              size: 16,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'Em andamento',
+              style: AppTextStyles.verySmallDarkSemiBold,
+            ),
+          ],
+        ),
+        /*
         Visibility(
           visible: isShowFavorite,
           child: const FavoriteIconButton(),
         ),
+        */
       ],
     );
   }

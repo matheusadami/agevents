@@ -68,4 +68,12 @@ class AppTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.w700,
   );
+
+  static TextStyle makeVerySmallSemiBoldByColor(Color color) {
+    return GoogleFonts.lexendDeca(
+      color: color,
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+    );
+  }
 }

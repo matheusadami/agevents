@@ -1,4 +1,5 @@
 import 'package:agevents/app/blocs/board/board.bloc.dart';
+import 'package:agevents/app/blocs/events/create/event.bloc.dart';
 import 'package:agevents/app/blocs/graphic/graphic.bloc.dart';
 import 'package:agevents/core/providers/navigation.bar.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,11 @@ class DependencyInjectionWidget extends StatelessWidget {
           BlocProvider<BoardBloc>(
             create: (context) => BoardBloc(),
           ),
-          BlocProvider(
+          BlocProvider<GraphicBloc>(
             create: (context) => GraphicBloc(),
+          ),
+          BlocProvider<EventBloc>(
+            create: (context) => EventBloc(),
           ),
         ],
         child: child,
