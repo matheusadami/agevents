@@ -17,7 +17,7 @@ class ProfileInfoWidget extends StatelessWidget {
             style: AppTextStyles.verySmallGraySemiBold,
           ),
           Text(
-            '(17) 992075281',
+            '(17) 999999999',
             style: AppTextStyles.smallDarkSemiBold,
           ),
           const SizedBox(height: 15),

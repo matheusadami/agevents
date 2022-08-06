@@ -1,9 +1,8 @@
 import 'package:agevents/app/blocs/events/create/event.bloc.dart';
-import 'package:agevents/app/blocs/events/create/event.event.dart';
 import 'package:agevents/app/blocs/events/create/event.state.dart';
-import 'package:agevents/core/components/clip.event.type.dart';
+import 'package:agevents/app/views/events/create/components/options.event.priority.dart';
+import 'package:agevents/app/views/events/create/components/options.event.type.dart';
 import 'package:agevents/core/components/text.form.input.dart';
-import 'package:agevents/core/enums/event.type.dart';
 import 'package:agevents/core/helpers/date.helper.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
@@ -76,102 +75,103 @@ class EventCreateFormBody extends StatelessWidget {
 
   const EventCreateFormBody({Key? key, required this.state}) : super(key: key);
 
-  void onTapChangeEventType(EventType eventType, BuildContext context) {
-    context.read<EventBloc>().add(ChangeTypeEventEvent(eventType));
-  }
-
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        child: Column(
-          children: [
-            BlocBuilder<EventBloc, EventState>(
-              buildWhen: (previous, current) {
-                final pName = previous.eventModel.name;
-                final cName = current.eventModel.name;
-                return pName != cName;
-              },
-              builder: (context, state) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: TextFormInputWidget(
-                  hintText: 'Nome',
-                  fillColor: AppColors.gray.withOpacity(0.3),
-                  helperText: 'Informe o nome do evento',
-                ),
-              ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints.loose(
+              const Size(double.maxFinite, double.maxFinite),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: TextFormInputWidget(
-                icon: FontAwesomeIcons.solidCalendarCheck,
-                hintText: 'Data',
-                fillColor: AppColors.gray.withOpacity(0.3),
-                helperText: 'Informe a data do evento',
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: TextFormInputWidget(
-                onTap: () {},
-                hintText: 'Descrição',
-                fillColor: AppColors.gray.withOpacity(0.3),
-                helperText: 'Informe a descrição do evento',
-                isTextArea: true,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(
-                    'Selecione a Categoria',
-                    style: AppTextStyles.smallDarkSemiBold,
-                  ),
                   BlocBuilder<EventBloc, EventState>(
                     buildWhen: (previous, current) {
-                      final int? pType = previous.eventModel.eventType?.index;
-                      final int? cType = current.eventModel.eventType?.index;
-                      return pType != cType;
+                      final pName = previous.eventModel.name;
+                      final cName = current.eventModel.name;
+                      return pName != cName;
                     },
-                    builder: (context, state) {
-                      final int? type = state.eventModel.eventType?.index;
-
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Row(
-                          children: [
-                            ClipEventType(
-                              onTap: onTapChangeEventType,
-                              eventType: EventType.personalEvent,
-                              isSelected: type == EventType.personalEvent.index,
-                            ),
-                            const SizedBox(width: 8),
-                            ClipEventType(
-                              onTap: onTapChangeEventType,
-                              eventType: EventType.workEvent,
-                              isSelected: type == EventType.workEvent.index,
-                            ),
-                            const SizedBox(width: 8),
-                            ClipEventType(
-                              onTap: onTapChangeEventType,
-                              eventType: EventType.studyEvent,
-                              isSelected: type == EventType.studyEvent.index,
-                            ),
-                            const SizedBox(width: 8),
-                          ],
+                    builder: (context, state) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: TextFormInputWidget(
+                        hintText: 'Nome',
+                        fillColor: AppColors.gray.withOpacity(0.3),
+                        helperText: 'Informe o nome do evento',
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: TextFormInputWidget(
+                      icon: FontAwesomeIcons.solidCalendarCheck,
+                      hintText: 'Data',
+                      fillColor: AppColors.gray.withOpacity(0.3),
+                      helperText: 'Informe a data do evento',
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: TextFormInputWidget(
+                      onTap: () {},
+                      hintText: 'Descrição',
+                      fillColor: AppColors.gray.withOpacity(0.3),
+                      helperText: 'Informe a descrição do evento',
+                      isTextArea: true,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Selecione a Categoria',
+                          style: AppTextStyles.smallDarkSemiBold,
                         ),
-                      );
-                    },
+                        const OptionsEventTypeWidget(),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Selecione a Prioridade',
+                          style: AppTextStyles.smallDarkSemiBold,
+                        ),
+                        const OptionsEventPriorityWidget(),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    child: SizedBox(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).colorScheme.primary,
+                        ),
+                        onPressed: () {},
+                        child: Text(
+                          'Salvar',
+                          style: AppTextStyles.smallWhiteSemiBold,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

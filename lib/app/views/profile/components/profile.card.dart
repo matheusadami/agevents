@@ -20,7 +20,7 @@ class ProfileCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Text(
-              'matheus.adami123@gmail.com',
+              'example@gmail.com',
               style: AppTextStyles.verySmallGraySemiBold,
             ),
             Padding(

@@ -20,7 +20,7 @@ class ClipEventType extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        return onTap != null ? onTap!(eventType, context) : null;
+        if (onTap != null) onTap!(eventType, context);
       },
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -29,9 +29,6 @@ class ClipEventType extends StatelessWidget {
             color: isSelected
                 ? AppColors.green.withOpacity(0.2)
                 : eventType.color.withOpacity(0.2),
-            border: isSelected
-                ? Border.all(color: AppColors.green.withRed(20))
-                : Border.all(style: BorderStyle.none),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
