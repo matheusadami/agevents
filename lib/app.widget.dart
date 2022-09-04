@@ -1,5 +1,9 @@
 import 'package:agevents/app/views/events/create/event.create.view.dart';
+import 'package:agevents/app/views/forgot-password/forgot.password.view.dart';
 import 'package:agevents/app/views/home/home.view.dart';
+import 'package:agevents/app/views/signin/signin.view.dart';
+import 'package:agevents/app/views/signup/signup.view.dart';
+import 'package:agevents/core/services/navigator.service.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/dependency.injection.widget.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +20,7 @@ class _AppWidgetState extends State<AppWidget> {
   Widget build(BuildContext context) {
     return DependencyInjectionWidget(
       child: MaterialApp(
+        navigatorKey: NavigationService.navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'AgEvents',
         theme: ThemeData(
@@ -29,8 +34,11 @@ class _AppWidgetState extends State<AppWidget> {
             secondary: AppColors.secondary,
           ),
         ),
-        initialRoute: '/home',
+        initialRoute: '/signin',
         routes: {
+          '/signin': (context) => const SignInView(),
+          '/signup': (context) => SignUpView(),
+          '/forgot-password': (context) => ForgotPasswordView(),
           '/home': (context) => const HomeView(),
           '/createEvent': (context) => const EventCreateView(),
         },

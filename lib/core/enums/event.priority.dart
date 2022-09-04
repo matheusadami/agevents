@@ -3,8 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum EventPriority {
-  high('Alta', AppColors.white, AppColors.red, FontAwesomeIcons.caretUp),
-  medium('Médio', AppColors.white, AppColors.darkGray, FontAwesomeIcons.minus),
+  high(
+    'Alta',
+    AppColors.white,
+    AppColors.red,
+    FontAwesomeIcons.caretUp,
+  ),
+
+  medium(
+    'Média',
+    AppColors.white,
+    AppColors.darkGray,
+    FontAwesomeIcons.minus,
+  ),
+
   low(
     'Baixa',
     AppColors.white,

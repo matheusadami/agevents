@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class EventListView extends StatelessWidget {
   final bool isShowFavorite;
+
   const EventListView({
     Key? key,
     this.isShowFavorite = true,

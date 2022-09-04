@@ -3,6 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyles {
+  static TextStyle bigPrimarySemiBold = GoogleFonts.lexendDeca(
+    color: AppColors.primary,
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+  );
+
   static TextStyle mediumWhiteSemiBold = GoogleFonts.lexendDeca(
     color: AppColors.white,
     fontSize: 20,
@@ -16,7 +22,7 @@ class AppTextStyles {
   );
 
   static TextStyle smallGraySemiBold = GoogleFonts.lexendDeca(
-    color: AppColors.white,
+    color: AppColors.gray,
     fontSize: 16,
     fontWeight: FontWeight.w600,
   );

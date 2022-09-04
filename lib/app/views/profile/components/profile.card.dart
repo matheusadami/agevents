@@ -29,28 +29,10 @@ class ProfileCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FloatingActionButton(
-                    backgroundColor: AppColors.red,
-                    onPressed: () {},
-                    child: const Icon(
-                      FontAwesomeIcons.solidHeart,
-                      size: 24,
-                      color: AppColors.white,
-                    ),
-                  ),
-                  FloatingActionButton(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     onPressed: () {},
                     child: const Icon(
                       FontAwesomeIcons.solidBell,
-                      size: 24,
-                      color: AppColors.white,
-                    ),
-                  ),
-                  FloatingActionButton(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    onPressed: () {},
-                    child: const Icon(
-                      FontAwesomeIcons.phone,
                       size: 24,
                       color: AppColors.white,
                     ),
