@@ -22,6 +22,7 @@ dependencies:
   flutter_sms: ^2.3.3
   flutter_bloc: ^8.0.1
   permission_handler: ^10.0.0
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,11 @@
+import 'package:agevents/app/blocs/forgot-password/forgot-password.bloc.dart';
+import 'package:agevents/app/blocs/forgot-password/forgot-password.event.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
+import 'package:agevents/core/helpers/alerts.helper.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class RecoveryCodeView extends StatelessWidget {
@@ -11,6 +15,21 @@ class RecoveryCodeView extends StatelessWidget {
     mask: '#-#-#-#',
     type: MaskAutoCompletionType.eager,
   );
+
+  void onTapRecoveryCode(BuildContext context) {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    if (codeMask.isFill()) {
+      final recoveryCodeEvent = RecoveryCodeForgotPassEvent(
+        codeMask.getUnmaskedText(),
+      );
+      return BlocProvider.of<ForgotPassBloc>(context).add(recoveryCodeEvent);
+    }
+
+    AlertsHelper.showWarnSnackBar(
+      'Por favor preencha as informações corretamente',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +74,7 @@ class RecoveryCodeView extends StatelessWidget {
             width: double.maxFinite,
             child: CommonButtonWidget(
               label: 'Verificar',
-              onTap: () {},
+              onTap: () => onTapRecoveryCode(context),
             ),
           ),
         ),

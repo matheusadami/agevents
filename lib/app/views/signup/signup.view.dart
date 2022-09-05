@@ -133,6 +133,7 @@ class SignUpBody extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: TextFormInputWidget(
+                    isObscureText: true,
                     controller: passwordController,
                     hintText: 'Senha',
                     icon: FontAwesomeIcons.asterisk,

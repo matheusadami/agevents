@@ -1,11 +1,33 @@
+import 'package:agevents/app/blocs/forgot-password/forgot-password.bloc.dart';
+import 'package:agevents/app/blocs/forgot-password/forgot-password.event.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
+import 'package:agevents/core/helpers/alerts.helper.dart';
+import 'package:agevents/core/helpers/custom.exception.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ChangePasswordView extends StatelessWidget {
-  const ChangePasswordView({Key? key}) : super(key: key);
+  ChangePasswordView({Key? key}) : super(key: key);
+
+  final passController = TextEditingController();
+  final confirmPassController = TextEditingController();
+
+  void onTapChangePassword(BuildContext context) {
+    try {
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      final changePasswordEvent = ChangePasswordForgotPassEvent(
+        passController.text,
+        confirmPassController.text,
+      );
+      return BlocProvider.of<ForgotPassBloc>(context).add(changePasswordEvent);
+    } on CustomException catch (e) {
+      AlertsHelper.showWarnSnackBar(e.message);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +52,20 @@ class ChangePasswordView extends StatelessWidget {
             style: AppTextStyles.smallGraySemiBold,
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: TextFormInputWidget(
+            isObscureText: true,
+            controller: passController,
             hintText: 'Nova Senha',
             icon: FontAwesomeIcons.asterisk,
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: TextFormInputWidget(
+            isObscureText: true,
+            controller: confirmPassController,
             hintText: 'Confirmar Nova Senha',
             icon: FontAwesomeIcons.asterisk,
           ),
@@ -50,7 +76,7 @@ class ChangePasswordView extends StatelessWidget {
             width: double.maxFinite,
             child: CommonButtonWidget(
               label: 'Confirmar',
-              onTap: () {},
+              onTap: () => onTapChangePassword(context),
             ),
           ),
         ),

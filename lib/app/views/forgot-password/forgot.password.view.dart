@@ -28,7 +28,7 @@ class ForgotPasswordView extends StatelessWidget {
       Step(
         title: const Text(''),
         state: getCurrentStepState(state, 2),
-        content: const ChangePasswordView(),
+        content: ChangePasswordView(),
         isActive: isStepActive(getCurrentStepState(state, 2)),
       ),
     ];

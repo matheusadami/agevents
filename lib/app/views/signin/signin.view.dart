@@ -1,3 +1,5 @@
+import 'package:agevents/app/blocs/signin/signin.bloc.dart';
+import 'package:agevents/app/blocs/signin/signin.event.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
 import 'package:agevents/core/services/navigator.service.dart';
@@ -7,9 +9,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SignInView extends StatelessWidget {
-  const SignInView({Key? key}) : super(key: key);
+  SignInView({Key? key}) : super(key: key);
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   void onTapGoSignUp() {
     NavigationService.navigateTo('/signup');
@@ -19,10 +25,16 @@ class SignInView extends StatelessWidget {
     NavigationService.navigateTo('/forgot-password');
   }
 
+  void onTapSignIn() {
+    final submitFormEvent = SubmitFormSignInEvent(
+      emailController.text,
+      passwordController.text,
+    );
+    NavigationService.context!.read<SignInBloc>().add(submitFormEvent);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         statusBarColor: AppColors.background,
@@ -67,16 +79,19 @@ class SignInView extends StatelessWidget {
                           style: AppTextStyles.smallGraySemiBold,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
                         child: TextFormInputWidget(
+                          controller: emailController,
                           hintText: 'E-mail',
                           icon: FontAwesomeIcons.solidEnvelope,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
                         child: TextFormInputWidget(
+                          controller: passwordController,
+                          isObscureText: true,
                           hintText: 'Senha',
                           icon: FontAwesomeIcons.asterisk,
                         ),
@@ -100,7 +115,7 @@ class SignInView extends StatelessWidget {
                           width: double.maxFinite,
                           child: CommonButtonWidget(
                             label: 'Entrar',
-                            onTap: () {},
+                            onTap: onTapSignIn,
                           ),
                         ),
                       ),

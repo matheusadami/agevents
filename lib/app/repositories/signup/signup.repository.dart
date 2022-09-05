@@ -9,7 +9,7 @@ class SignUpRepository implements ISignUpRepository {
   }
 
   @override
-  Future<UserModel> getUserByEmail(String email) {
+  Future<UserModel?> getUserByEmail(String email) {
     // TODO: implement getUserByEmail
     throw UnimplementedError();
   }

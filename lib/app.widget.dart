@@ -20,8 +20,8 @@ class _AppWidgetState extends State<AppWidget> {
   Widget build(BuildContext context) {
     return DependencyInjectionWidget(
       child: MaterialApp(
-        navigatorKey: NavigationService.navigatorKey,
         debugShowCheckedModeBanner: false,
+        navigatorKey: NavigationService.navigatorKey,
         title: 'AgEvents',
         theme: ThemeData(
           scaffoldBackgroundColor: AppColors.background,
@@ -36,7 +36,7 @@ class _AppWidgetState extends State<AppWidget> {
         ),
         initialRoute: '/signin',
         routes: {
-          '/signin': (context) => const SignInView(),
+          '/signin': (context) => SignInView(),
           '/signup': (context) => const SignUpView(),
           '/forgot-password': (context) => const ForgotPasswordView(),
           '/home': (context) => const HomeView(),

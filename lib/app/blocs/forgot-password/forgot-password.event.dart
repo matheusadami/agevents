@@ -12,4 +12,9 @@ class RecoveryCodeForgotPassEvent extends ForgotPassEvent {
   RecoveryCodeForgotPassEvent(this.code);
 }
 
-class ChangePasswordForgotPassEvent extends ForgotPassEvent {}
+class ChangePasswordForgotPassEvent extends ForgotPassEvent {
+  final String password;
+  final String confirmPassword;
+
+  ChangePasswordForgotPassEvent(this.password, this.confirmPassword);
+}

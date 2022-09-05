@@ -14,6 +14,7 @@ class TextFormInputWidget extends StatelessWidget {
   final IconData? icon;
   final bool isTextArea;
   final TextAlign textAlign;
+  final bool isObscureText;
   final List<TextInputFormatter>? inputFormatters;
 
   const TextFormInputWidget({
@@ -29,6 +30,7 @@ class TextFormInputWidget extends StatelessWidget {
     this.fillColor,
     this.textAlign = TextAlign.start,
     this.inputFormatters,
+    this.isObscureText = false,
   }) : super(key: key);
 
   @override
@@ -41,6 +43,7 @@ class TextFormInputWidget extends StatelessWidget {
       textAlign: textAlign,
       autofocus: autofocus,
       controller: controller,
+      obscureText: isObscureText,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       decoration: InputDecoration(
