@@ -4,8 +4,8 @@ import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class RecoverCodeView extends StatelessWidget {
-  RecoverCodeView({Key? key}) : super(key: key);
+class RecoveryCodeView extends StatelessWidget {
+  RecoveryCodeView({Key? key}) : super(key: key);
 
   final codeMask = MaskTextInputFormatter(
     mask: '#-#-#-#',

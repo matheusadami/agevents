@@ -2,8 +2,11 @@ import 'package:agevents/app/blocs/board/board.bloc.dart';
 import 'package:agevents/app/blocs/events/create/event.bloc.dart';
 import 'package:agevents/app/blocs/graphic/graphic.bloc.dart';
 import 'package:agevents/app/blocs/signup/signup.bloc.dart';
+import 'package:agevents/app/repositories/forgot-password/forgot.password.repository.dart';
+import 'package:agevents/app/repositories/forgot-password/interface.forgot.password.repository.dart';
 import 'package:agevents/app/repositories/signup/interface.signup.repository.dart';
 import 'package:agevents/app/repositories/signup/signup.repository.dart';
+import 'package:agevents/app/services/sms.service.dart';
 import 'package:agevents/core/providers/navigation.bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +28,12 @@ class DependencyInjectionWidget extends StatelessWidget {
         ),
         Provider<ISignUpRepository>(
           create: (context) => SignUpRepository(),
+        ),
+        Provider<IForgotPasswordRepository>(
+          create: (context) => FotgotPasswordRepository(),
+        ),
+        Provider<SMSService>(
+          create: (context) => SMSService(),
         ),
       ],
       child: MultiBlocProvider(

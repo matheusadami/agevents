@@ -37,8 +37,8 @@ class _AppWidgetState extends State<AppWidget> {
         initialRoute: '/signin',
         routes: {
           '/signin': (context) => const SignInView(),
-          '/signup': (context) => SignUpView(),
-          '/forgot-password': (context) => ForgotPasswordView(),
+          '/signup': (context) => const SignUpView(),
+          '/forgot-password': (context) => const ForgotPasswordView(),
           '/home': (context) => const HomeView(),
           '/createEvent': (context) => const EventCreateView(),
         },

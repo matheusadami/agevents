@@ -12,15 +12,16 @@ dependencies:
   flutter:
     sdk: flutter
 
+  mask_text_input_formatter: ^2.4.0
   font_awesome_flutter: ^10.1.0
   cupertino_icons: ^1.0.2
   calendar_appbar: ^0.0.6
   google_fonts: ^3.0.1
   provider: ^6.0.3
   fl_chart: ^0.55.0
-  flutter_bloc: ^8.0.1
-  mask_text_input_formatter: ^2.4.0
   flutter_sms: ^2.3.3
+  flutter_bloc: ^8.0.1
+  permission_handler: ^10.0.0
 
 dev_dependencies:
   flutter_test:

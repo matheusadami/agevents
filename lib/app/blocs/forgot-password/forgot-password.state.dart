@@ -4,6 +4,8 @@ abstract class ForgotPassState {
   ForgotPassState({this.stepIndex = -1});
 }
 
+class LoadingStepForgotPassState extends ForgotPassState {}
+
 class FirstStepForgotPassState extends ForgotPassState {
   FirstStepForgotPassState({super.stepIndex = 0});
 }

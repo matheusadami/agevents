@@ -15,4 +15,14 @@ class NavigationService {
       arguments: arguments,
     );
   }
+
+  static Future<dynamic> navigateToReplacement(
+    String routeName, [
+    Object? arguments,
+  ]) {
+    return navigatorKey.currentState!.pushReplacementNamed(
+      routeName,
+      arguments: arguments,
+    );
+  }
 }

@@ -1,9 +1,13 @@
+import 'package:agevents/app/blocs/forgot-password/forgot-password.bloc.dart';
+import 'package:agevents/app/blocs/forgot-password/forgot-password.event.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
+import 'package:agevents/core/helpers/alerts.helper.dart';
 import 'package:agevents/core/services/navigator.service.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -14,6 +18,19 @@ class SendSMSView extends StatelessWidget {
     mask: '(##) #####-####',
     type: MaskAutoCompletionType.eager,
   );
+
+  void onTapSendSMS(BuildContext context) {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    if (phoneMask.isFill()) {
+      final sendSMSEvent = SendSMSForgotPassEvent(phoneMask.getUnmaskedText());
+      return BlocProvider.of<ForgotPassBloc>(context).add(sendSMSEvent);
+    }
+
+    AlertsHelper.showWarnSnackBar(
+      'Por favor preencha as informações corretamente',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +70,7 @@ class SendSMSView extends StatelessWidget {
             width: double.maxFinite,
             child: CommonButtonWidget(
               label: 'Enviar SMS',
-              onTap: () {},
+              onTap: () => onTapSendSMS(context),
             ),
           ),
         ),
