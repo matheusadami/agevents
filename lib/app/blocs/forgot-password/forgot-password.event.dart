@@ -4,6 +4,12 @@ class SendSMSForgotPassEvent extends ForgotPassEvent {
   final String phone;
 
   SendSMSForgotPassEvent(this.phone);
+
+  Map<String, String> toMap() {
+    return {
+      'phone': phone,
+    };
+  }
 }
 
 class RecoveryCodeForgotPassEvent extends ForgotPassEvent {
@@ -17,4 +23,10 @@ class ChangePasswordForgotPassEvent extends ForgotPassEvent {
   final String confirmPassword;
 
   ChangePasswordForgotPassEvent(this.password, this.confirmPassword);
+
+  Map<String, String> toMap() {
+    return {
+      'password': password,
+    };
+  }
 }

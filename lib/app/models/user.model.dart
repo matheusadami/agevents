@@ -43,11 +43,11 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      uuid: map['uuid'],
+      uuid: map['_id'],
       name: map['name'] ?? '',
       phone: map['phone'] ?? '',
       email: map['email'] ?? '',
-      isActive: map['isActive'] ?? false,
+      isActive: map['isActive'] ?? true,
     );
   }
 

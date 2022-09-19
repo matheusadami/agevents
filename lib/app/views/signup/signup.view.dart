@@ -3,6 +3,7 @@ import 'package:agevents/app/blocs/signup/signup.event.dart';
 import 'package:agevents/app/blocs/signup/signup.state.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
+import 'package:agevents/core/helpers/alerts.helper.dart';
 import 'package:agevents/core/services/navigator.service.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
@@ -28,17 +29,15 @@ class SignUpView extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: BlocConsumer<SignUpBloc, SignUpState>(
-            listener: (context, state) {
-              if (state is SuccessfullySignUpState) {}
-
-              if (state is ExceptionSignUpState) {}
-            },
+            listener: (context, state) {},
             builder: (context, state) {
               switch (state.runtimeType) {
                 case FormSignUpState:
                   return SignUpBody();
                 case LoadingSignUpState:
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
               }
 
               return Container();
@@ -66,14 +65,18 @@ class SignUpBody extends StatelessWidget {
   }
 
   void onSubmitForm(BuildContext context) {
-    final submitFormEvent = SubmitFormSignUpEvent(
-      name: nameController.text,
-      phone: phoneMask.getUnmaskedText(),
-      email: emailController.text,
-      password: passwordController.text,
-    );
+    if (!phoneMask.isFill()) {
+      AlertsHelper.showWarnSnackBar('Por favor informe seu celular');
+    } else {
+      final submitFormEvent = SubmitFormSignUpEvent(
+        name: nameController.text,
+        phone: phoneMask.getUnmaskedText(),
+        email: emailController.text,
+        password: passwordController.text,
+      );
 
-    NavigationService.context!.read<SignUpBloc>().add(submitFormEvent);
+      NavigationService.context!.read<SignUpBloc>().add(submitFormEvent);
+    }
   }
 
   @override

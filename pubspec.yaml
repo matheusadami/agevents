@@ -21,6 +21,7 @@ dependencies:
   fl_chart: ^0.55.0
   flutter_sms: ^2.3.3
   flutter_bloc: ^8.0.1
+  graphql_flutter: ^5.1.0
   permission_handler: ^10.0.0
   shared_preferences: ^2.0.15
 

@@ -1,5 +1,5 @@
 import 'package:agevents/core/components/event.list.view.dart';
-import 'package:agevents/core/providers/navigation.bar.dart';
+import 'package:agevents/core/providers/navigation.bar.provider.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';

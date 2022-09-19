@@ -4,7 +4,7 @@ import 'package:agevents/app/views/feed/feed.view.dart';
 import 'package:agevents/app/views/home/components/animated.bottom.bar.dart';
 import 'package:agevents/app/views/home/components/bottom.navigation.bar.dart';
 import 'package:agevents/app/views/profile/profile.view.dart';
-import 'package:agevents/core/providers/navigation.bar.dart';
+import 'package:agevents/core/providers/navigation.bar.provider.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

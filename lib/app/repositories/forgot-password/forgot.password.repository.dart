@@ -1,13 +1,14 @@
-import 'package:agevents/app/models/user.model.dart';
 import 'package:agevents/app/repositories/forgot-password/interface.forgot.password.repository.dart';
+import 'package:agevents/app/services/graphql.client.service.dart';
 import 'package:agevents/app/services/local.storage.service.dart';
 import 'package:agevents/core/services/navigator.service.dart';
 import 'package:provider/provider.dart';
 
 class FotgotPasswordRepository implements IForgotPasswordRepository {
-  @override
-  Future<void> changePassword(String newPassword, String userId) async {
-    return await Future.delayed(const Duration(seconds: 2));
+  late final GraphQLClientService graphQLService;
+
+  FotgotPasswordRepository() {
+    graphQLService = NavigationService.context!.read<GraphQLClientService>();
   }
 
   @override
@@ -23,8 +24,25 @@ class FotgotPasswordRepository implements IForgotPasswordRepository {
   }
 
   @override
-  Future<UserModel?> getUserByPhone(String phone) async {
-    return await Future.delayed(const Duration(seconds: 2));
+  Future<Map<String, dynamic>> getUserByPhone(
+    Map<String, String> variables,
+  ) async {
+    final stringMutation = graphQLService.buildQueryOperation(
+      operationGraphQL: TypeOperationGraphQL.query,
+      operationName: 'GetUserByPhone',
+      paramsOperation: {
+        r'$phone': 'String!',
+      },
+      eventName: 'getUserByPhone',
+      paramsEvent: {
+        'phone': r'$phone',
+      },
+      returnFields: ['_id', 'name', 'email', 'phone'],
+    );
+
+    final data = await graphQLService.send(stringMutation, variables);
+
+    return data['getUserByPhone'] ?? {};
   }
 
   @override
@@ -43,5 +61,28 @@ class FotgotPasswordRepository implements IForgotPasswordRepository {
       key: key,
       value: value,
     );
+  }
+
+  @override
+  Future<bool> changePassword(String newPassword, String userId) async {
+    final stringMutation = graphQLService.buildQueryOperation(
+      operationGraphQL: TypeOperationGraphQL.mutation,
+      operationName: 'ChangeUserPassword',
+      paramsOperation: {
+        r'$userId': 'ID!',
+        r'$password': 'String!',
+      },
+      eventName: 'changeUserPassword',
+      paramsEvent: {
+        'userId': r'$userId',
+        'password': r'$password',
+      },
+      returnFields: ['isChanged'],
+    );
+
+    final variables = {'userId': userId, 'password': newPassword};
+    await graphQLService.send(stringMutation, variables);
+
+    return true;
   }
 }

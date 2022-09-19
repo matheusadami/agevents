@@ -6,6 +6,7 @@ import 'package:agevents/app/views/board/components/graphic.widget.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -56,52 +57,30 @@ class BoardViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Board',
+          style: AppTextStyles.mediumDarkSemiBold,
+        ),
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: AppColors.white,
+          statusBarIconBrightness: Brightness.dark,
+        ),
+      ),
+      body: SafeArea(
         child: Column(
           children: [
             Expanded(
-              flex: 2,
-              child: Container(
-                constraints: const BoxConstraints.expand(),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(25),
-                  ),
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                  ),
-                  child: Row(
-                    children: const [
-                      Icon(
-                        FontAwesomeIcons.chartPie,
-                        color: AppColors.white,
-                        size: 20,
-                      ),
-                      /*
-                      const SizedBox(width: 15),
-                      Text(
-                        'Board',
-                        style: AppTextStyles.mediumWhiteSemiBold,
-                      ),
-                      */
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 7,
+              flex: 4,
               child: Container(
                 constraints: const BoxConstraints.expand(),
                 child: GraphicWidget(graphicModel: graphicModel),
               ),
             ),
             Expanded(
-              flex: 10,
+              flex: 4,
               child: Container(
                 constraints: const BoxConstraints.expand(),
                 decoration: const BoxDecoration(
@@ -114,7 +93,7 @@ class BoardViewBody extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
-                    vertical: 24,
+                    vertical: 8,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

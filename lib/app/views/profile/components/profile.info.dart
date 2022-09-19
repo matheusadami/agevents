@@ -1,4 +1,3 @@
-import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
 
 class ProfileInfoWidget extends StatelessWidget {
@@ -11,34 +10,7 @@ class ProfileInfoWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(
-            'Telefone',
-            style: AppTextStyles.verySmallGraySemiBold,
-          ),
-          Text(
-            '(17) 999999999',
-            style: AppTextStyles.smallDarkSemiBold,
-          ),
-          const SizedBox(height: 15),
-          Text(
-            'País',
-            style: AppTextStyles.verySmallGraySemiBold,
-          ),
-          Text(
-            'Brasil',
-            style: AppTextStyles.smallDarkSemiBold,
-          ),
-          const SizedBox(height: 15),
-          Text(
-            'Profissão',
-            style: AppTextStyles.verySmallGraySemiBold,
-          ),
-          Text(
-            'Júnior Developer',
-            style: AppTextStyles.smallDarkSemiBold,
-          ),
-        ],
+        children: const [],
       ),
     );
   }

@@ -12,4 +12,13 @@ class SubmitFormSignUpEvent extends SignUpEvent {
     required this.email,
     required this.password,
   });
+
+  Map<String, String> toMap() {
+    return {
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'password': password,
+    };
+  }
 }
