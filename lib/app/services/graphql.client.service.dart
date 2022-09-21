@@ -48,17 +48,19 @@ class GraphQLClientService {
     required Map<String, dynamic> paramsEvent,
     required List<String> returnFields,
   }) {
+    final regExp = RegExp(r'[{}]');
     late String query;
     late String formatParamsEvent;
     late String formatParamsOperation;
 
-    formatParamsOperation =
-        paramsOperation.toString().replaceAll(RegExp(r'[{}]'), '');
+    formatParamsOperation = paramsOperation.toString().replaceAll(regExp, '');
 
-    formatParamsEvent =
-        paramsEvent.toString().replaceFirst(RegExp(r'[{}]'), '');
+    formatParamsEvent = paramsEvent.toString().replaceFirst(regExp, '');
     formatParamsEvent = formatParamsEvent.replaceFirst(
-        RegExp(r'[{}]'), '', formatParamsEvent.length - 1);
+      RegExp(r'[{}]'),
+      '',
+      formatParamsEvent.length - 1,
+    );
 
     query = operationGraphQL.name;
     query += ' $operationName($formatParamsOperation) { ';

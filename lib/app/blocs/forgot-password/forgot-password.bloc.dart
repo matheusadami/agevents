@@ -56,7 +56,7 @@ class ForgotPassBloc extends Bloc<ForgotPassEvent, ForgotPassState> {
       await smsService.sendSMS(message, [event.phone]);
 
       await repository.saveRecoveryCode(_keyNameRecoverCode, randomCode.join());
-      await repository.saveUserId(_keyNameUserId, user.uuid!);
+      await repository.saveUserId(_keyNameUserId, user.id!);
 
       emit(SecondStepForgotPassState());
     } on CustomException catch (e) {

@@ -27,7 +27,7 @@ class FotgotPasswordRepository implements IForgotPasswordRepository {
   Future<Map<String, dynamic>> getUserByPhone(
     Map<String, String> variables,
   ) async {
-    final stringMutation = graphQLService.buildQueryOperation(
+    final stringQuery = graphQLService.buildQueryOperation(
       operationGraphQL: TypeOperationGraphQL.query,
       operationName: 'GetUserByPhone',
       paramsOperation: {
@@ -40,7 +40,7 @@ class FotgotPasswordRepository implements IForgotPasswordRepository {
       returnFields: ['_id', 'name', 'email', 'phone'],
     );
 
-    final data = await graphQLService.send(stringMutation, variables);
+    final data = await graphQLService.send(stringQuery, variables);
 
     return data['getUserByPhone'] ?? {};
   }

@@ -12,7 +12,7 @@ class SignInRepository implements ISignInRepository {
 
   @override
   Future<Map<String, dynamic>> signIn(Map<String, dynamic> variables) async {
-    final stringMutation = graphQLService.buildQueryOperation(
+    final stringQuery = graphQLService.buildQueryOperation(
       operationGraphQL: TypeOperationGraphQL.query,
       operationName: 'Login',
       paramsOperation: {
@@ -27,7 +27,7 @@ class SignInRepository implements ISignInRepository {
       returnFields: ['userId', 'token'],
     );
 
-    final data = await graphQLService.send(stringMutation, variables);
+    final data = await graphQLService.send(stringQuery, variables);
 
     return data['login'];
   }
@@ -36,7 +36,7 @@ class SignInRepository implements ISignInRepository {
   Future<Map<String, dynamic>> getUserById(
     Map<String, dynamic> variables,
   ) async {
-    final stringMutation = graphQLService.buildQueryOperation(
+    final stringQuery = graphQLService.buildQueryOperation(
       operationGraphQL: TypeOperationGraphQL.query,
       operationName: 'GetUserById',
       paramsOperation: {
@@ -49,7 +49,7 @@ class SignInRepository implements ISignInRepository {
       returnFields: ['_id', 'name', 'phone', 'email'],
     );
 
-    final data = await graphQLService.send(stringMutation, variables);
+    final data = await graphQLService.send(stringQuery, variables);
 
     return data['getUserById'];
   }
