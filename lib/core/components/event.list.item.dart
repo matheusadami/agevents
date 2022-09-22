@@ -1,18 +1,20 @@
+import 'package:agevents/app/models/event.model.dart';
 import 'package:agevents/core/components/clip.event.type.dart';
 import 'package:agevents/core/components/event.priority.dart';
-import 'package:agevents/core/enums/event.priority.dart';
-import 'package:agevents/core/enums/event.type.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class EventListItem extends StatelessWidget {
-  final bool isShowFavorite;
   const EventListItem({
     Key? key,
     this.isShowFavorite = true,
+    required this.eventModel,
   }) : super(key: key);
+
+  final bool isShowFavorite;
+  final EventModel eventModel;
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +28,17 @@ class EventListItem extends StatelessWidget {
               bottom: isShowFavorite ? 0 : 11.5,
               top: isShowFavorite ? 0 : 11.5,
             ),
-            child: EventTypeInfo(isShowFavorite: isShowFavorite),
+            child: EventTypeInfo(
+              eventModel: eventModel,
+              isShowFavorite: isShowFavorite,
+            ),
           ),
           Text(
-            'Reunião de Negócios',
+            eventModel.name,
             style: AppTextStyles.smallDarkSemiBold,
           ),
           const SizedBox(height: 8),
-          const EventSubtitleInfo(),
+          EventSubtitleInfo(eventModel: eventModel),
         ],
       ),
     );
@@ -41,7 +46,12 @@ class EventListItem extends StatelessWidget {
 }
 
 class EventSubtitleInfo extends StatelessWidget {
-  const EventSubtitleInfo({Key? key}) : super(key: key);
+  const EventSubtitleInfo({
+    Key? key,
+    required this.eventModel,
+  }) : super(key: key);
+
+  final EventModel eventModel;
 
   @override
   Widget build(BuildContext context) {
@@ -58,44 +68,44 @@ class EventSubtitleInfo extends StatelessWidget {
               ),
             ),
             Text(
-              '10/10/2022',
+              eventModel.date,
               style: AppTextStyles.verySmallGraySemiBold,
             ),
           ],
         ),
         const SizedBox(width: 25),
-        const ClipEventPriority(eventPriority: EventPriority.high),
+        ClipEventPriority(eventPriority: eventModel.eventPriority!),
       ],
     );
   }
 }
 
 class EventTypeInfo extends StatelessWidget {
-  final bool isShowFavorite;
-
   const EventTypeInfo({
     Key? key,
+    required this.eventModel,
     required this.isShowFavorite,
   }) : super(key: key);
+
+  final bool isShowFavorite;
+  final EventModel eventModel;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const ClipEventType(
-          eventType: EventType.workEvent,
-        ),
+        ClipEventType(eventType: eventModel.eventType!),
         Row(
           children: [
             Icon(
-              FontAwesomeIcons.spinner,
+              eventModel.eventStatus!.iconData,
               size: 16,
-              color: Theme.of(context).colorScheme.primary,
+              color: eventModel.eventStatus!.color,
             ),
             const SizedBox(width: 10),
             Text(
-              'Em andamento',
+              eventModel.eventStatus!.label,
               style: AppTextStyles.verySmallDarkSemiBold,
             ),
           ],

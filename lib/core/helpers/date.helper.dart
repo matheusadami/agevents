@@ -1,4 +1,9 @@
 class DateHelper {
+  static String convertDateFromBRToUS(String dateTime) {
+    final newDate = dateTime.substring(0, 10);
+    return (newDate.split('/').reversed.toList()).join('-');
+  }
+
   static String convertDateFromUSToBR(String dateTime) {
     final newDate = dateTime.substring(0, 10);
     return (newDate.split('-').reversed.toList()).join('/');

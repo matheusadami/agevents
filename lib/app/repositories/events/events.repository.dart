@@ -11,29 +11,43 @@ class EventsRepository implements IEventsRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> searchEventsFromUser(
+  Future<List<Map<String, dynamic>>> searchEventsFromUser(
     Map<String, dynamic> variables,
   ) async {
     final stringQuery = graphQLService.buildQueryOperation(
       operationGraphQL: TypeOperationGraphQL.query,
-      operationName: 'GetEventsFromUser',
+      operationName: 'SearchEventsFromUser',
       paramsOperation: {
         r'$userId': 'ID!',
+        r'$title': 'String',
+        r'$finalDate': 'String',
+        r'$initialDate': 'String',
+        r'$category': 'Int',
+        r'$priority': 'Int',
       },
-      eventName: 'getEventsFromUser',
+      eventName: 'searchEventsFromUser',
       paramsEvent: {
         'userId': r'$userId',
+        'searchEventsMobile': {
+          'title': r'$title',
+          'finalDate': r'$finalDate',
+          'initialDate': r'$initialDate',
+          'category': r'$category',
+          'priority': r'$priority',
+        },
       },
       returnFields: [
         '_id',
         'title',
         'description',
         'date',
+        'status',
         'category',
         'priority',
       ],
     );
 
-    return await graphQLService.send(stringQuery, variables);
+    final data = await graphQLService.send(stringQuery, variables);
+    return data['searchEventsFromUser'];
   }
 }

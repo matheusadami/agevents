@@ -36,7 +36,7 @@ class _AppWidgetState extends State<AppWidget> {
               secondary: AppColors.secondary,
             ),
           ),
-          initialRoute: '/home',
+          initialRoute: '/signin',
           routes: {
             '/signin': (context) => const SignInView(),
             '/signup': (context) => const SignUpView(),

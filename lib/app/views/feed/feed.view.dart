@@ -1,4 +1,3 @@
-import 'package:agevents/core/components/event.list.view.dart';
 import 'package:agevents/core/providers/navigation.bar.provider.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
@@ -127,7 +126,7 @@ class _FeedViewState extends State<FeedView> {
                           ),
                         ],
                       ),
-                      const EventListView(isShowFavorite: false),
+                      // const EventListView(isShowFavorite: false),
                     ],
                   ),
                 ),
