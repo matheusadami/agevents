@@ -48,6 +48,14 @@ class EventsRepository implements IEventsRepository {
     );
 
     final data = await graphQLService.send(stringQuery, variables);
-    return data['searchEventsFromUser'];
+
+    List<Map<String, dynamic>> events = [];
+    if (data.containsKey('searchEventsFromUser')) {
+      for (var map in data['searchEventsFromUser']) {
+        events.add(Map<String, dynamic>.from(map));
+      }
+    }
+
+    return events;
   }
 }

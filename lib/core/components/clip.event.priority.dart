@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ClipEventPriority extends StatelessWidget {
-  final bool isLarge;
   final bool isSelected;
   final EventPriority eventPriority;
   final void Function(EventPriority eventPriority, BuildContext context)? onTap;
@@ -13,7 +12,6 @@ class ClipEventPriority extends StatelessWidget {
   const ClipEventPriority({
     Key? key,
     this.onTap,
-    this.isLarge = false,
     this.isSelected = false,
     required this.eventPriority,
   }) : super(key: key);
@@ -33,10 +31,7 @@ class ClipEventPriority extends StatelessWidget {
                 : eventPriority.color.withOpacity(0.2),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: isLarge ? 10 : 5,
-              vertical: isLarge ? 4 : 2,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.min,

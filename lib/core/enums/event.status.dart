@@ -3,9 +3,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum EventStatus {
-  pending(AppColors.tertiary, FontAwesomeIcons.spinner, 'Pendente'),
-  doing(AppColors.primary, FontAwesomeIcons.spinner, 'Em andamento'),
-  completed(AppColors.secondary, FontAwesomeIcons.spinner, 'Finalizado');
+  pending(
+    AppColors.tertiary,
+    FontAwesomeIcons.solidClock,
+    'Pendente',
+  ),
+  doing(
+    AppColors.primary,
+    FontAwesomeIcons.barsProgress,
+    'Em andamento',
+  ),
+  completed(
+    AppColors.secondary,
+    FontAwesomeIcons.solidCircleCheck,
+    'Finalizado',
+  );
 
   const EventStatus(this.color, this.iconData, this.label);
 

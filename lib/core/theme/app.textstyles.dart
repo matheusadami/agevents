@@ -45,6 +45,12 @@ class AppTextStyles {
     fontWeight: FontWeight.w700,
   );
 
+  static TextStyle verySmallDarGraykSemiBold = GoogleFonts.lexendDeca(
+    color: AppColors.darkGray,
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+  );
+
   static TextStyle verySmallTertiarySemiBold = GoogleFonts.lexendDeca(
     color: AppColors.tertiary,
     fontSize: 12,

@@ -7,24 +7,34 @@ class CommonButtonWidget extends StatelessWidget {
     required this.label,
     required this.onTap,
     this.backgroundColor,
+    this.icon,
   }) : super(key: key);
 
   final String label;
   final void Function() onTap;
   final Color? backgroundColor;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: backgroundColor ?? Theme.of(context).colorScheme.primary,
+        backgroundColor:
+            backgroundColor ?? Theme.of(context).colorScheme.primary,
       ),
       onPressed: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Text(
-          label,
-          style: AppTextStyles.smallWhiteSemiBold,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null) icon!,
+            if (icon != null) const SizedBox(width: 15),
+            Text(
+              label,
+              style: AppTextStyles.smallWhiteSemiBold,
+            ),
+          ],
         ),
       ),
     );

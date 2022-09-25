@@ -42,7 +42,7 @@ class _AppWidgetState extends State<AppWidget> {
             '/signup': (context) => const SignUpView(),
             '/forgot-password': (context) => const ForgotPasswordView(),
             '/home': (context) => const HomeView(),
-            '/createEvent': (context) => const EventCreateView(),
+            '/create-event': (context) => const EventCreateView(),
           },
         ),
       ),

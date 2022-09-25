@@ -1,138 +1,69 @@
 import 'package:agevents/app/models/event.model.dart';
+import 'package:agevents/app/views/events/sheet/event.sheet.view.dart';
+import 'package:agevents/core/components/clip.event.priority.dart';
 import 'package:agevents/core/components/clip.event.type.dart';
-import 'package:agevents/core/components/event.priority.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class EventListItem extends StatelessWidget {
   const EventListItem({
     Key? key,
     this.isShowFavorite = true,
     required this.eventModel,
+    required this.onTap,
   }) : super(key: key);
 
   final bool isShowFavorite;
   final EventModel eventModel;
+  final void Function(EventModel eventModel) onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(
-              bottom: isShowFavorite ? 0 : 11.5,
-              top: isShowFavorite ? 0 : 11.5,
-            ),
-            child: EventTypeInfo(
-              eventModel: eventModel,
-              isShowFavorite: isShowFavorite,
-            ),
-          ),
-          Text(
-            eventModel.name,
-            style: AppTextStyles.smallDarkSemiBold,
-          ),
-          const SizedBox(height: 8),
-          EventSubtitleInfo(eventModel: eventModel),
-        ],
-      ),
-    );
-  }
-}
-
-class EventSubtitleInfo extends StatelessWidget {
-  const EventSubtitleInfo({
-    Key? key,
-    required this.eventModel,
-  }) : super(key: key);
-
-  final EventModel eventModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 8),
-              child: Icon(
-                FontAwesomeIcons.solidCalendarCheck,
-                size: 16,
-                color: AppColors.gray,
+    return InkWell(
+      borderRadius: BorderRadius.circular(15),
+      onTap: () => onTap(eventModel),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.gray.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ClipEventPriority(eventPriority: eventModel.eventPriority!),
+                    ClipEventType(eventType: eventModel.eventType!),
+                  ],
+                ),
               ),
-            ),
-            Text(
-              eventModel.date,
-              style: AppTextStyles.verySmallGraySemiBold,
-            ),
-          ],
+              const Divider(color: AppColors.gray, thickness: 1, height: 5),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8, top: 8),
+                child: Text(
+                  eventModel.name,
+                  style: AppTextStyles.smallDarkSemiBold,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ClipEventDate(eventModel: eventModel),
+                    ClipEventStatus(eventModel: eventModel),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(width: 25),
-        ClipEventPriority(eventPriority: eventModel.eventPriority!),
-      ],
-    );
-  }
-}
-
-class EventTypeInfo extends StatelessWidget {
-  const EventTypeInfo({
-    Key? key,
-    required this.eventModel,
-    required this.isShowFavorite,
-  }) : super(key: key);
-
-  final bool isShowFavorite;
-  final EventModel eventModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        ClipEventType(eventType: eventModel.eventType!),
-        Row(
-          children: [
-            Icon(
-              eventModel.eventStatus!.iconData,
-              size: 16,
-              color: eventModel.eventStatus!.color,
-            ),
-            const SizedBox(width: 10),
-            Text(
-              eventModel.eventStatus!.label,
-              style: AppTextStyles.verySmallDarkSemiBold,
-            ),
-          ],
-        ),
-        /*
-        Visibility(
-          visible: isShowFavorite,
-          child: const FavoriteIconButton(),
-        ),
-        */
-      ],
-    );
-  }
-}
-
-class FavoriteIconButton extends StatelessWidget {
-  const FavoriteIconButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      iconSize: 20,
-      padding: const EdgeInsets.all(0.0),
-      onPressed: () {},
-      icon: const Icon(
-        FontAwesomeIcons.heart,
-        color: AppColors.gray,
       ),
     );
   }

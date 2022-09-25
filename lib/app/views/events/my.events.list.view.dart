@@ -3,6 +3,7 @@ import 'package:agevents/app/blocs/events/my.events.event.dart';
 import 'package:agevents/app/blocs/events/my.events.state.dart';
 import 'package:agevents/app/models/event.model.dart';
 import 'package:agevents/app/views/events/components/filter.events.dialog.dart';
+import 'package:agevents/app/views/events/sheet/event.sheet.view.dart';
 import 'package:agevents/core/components/event.list.view.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
@@ -15,7 +16,7 @@ class MyEventsListView extends StatelessWidget {
   const MyEventsListView({Key? key}) : super(key: key);
 
   void onPressedCreateEvent(BuildContext context) {
-    Navigator.pushNamed(context, '/createEvent');
+    Navigator.pushNamed(context, '/create-event');
   }
 
   @override
@@ -70,6 +71,8 @@ class MyEventsListView extends StatelessWidget {
 class MyEventsViewBody extends StatelessWidget {
   const MyEventsViewBody({Key? key, required this.events}) : super(key: key);
 
+  final List<EventModel> events;
+
   void onTapButtonFilter(BuildContext context) {
     showDialog(
       context: context,
@@ -77,7 +80,17 @@ class MyEventsViewBody extends StatelessWidget {
     );
   }
 
-  final List<EventModel> events;
+  void onTapEvent(EventModel eventModel, BuildContext context) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25),
+        ),
+      ),
+      context: context,
+      builder: (context) => EventSheetView(eventModel: eventModel),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +113,7 @@ class MyEventsViewBody extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: EventListView(
+                  onTap: (eventModel) => onTapEvent(eventModel, context),
                   events: events,
                   isShowFavorite: false,
                 ),

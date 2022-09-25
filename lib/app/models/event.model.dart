@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:agevents/core/enums/event.priority.dart';
 import 'package:agevents/core/enums/event.status.dart';
 import 'package:agevents/core/enums/event.type.dart';
+import 'package:agevents/core/helpers/date.helper.dart';
 
 class EventModel {
   final String id;
@@ -47,7 +48,7 @@ class EventModel {
     return {
       '_id': id,
       'title': name,
-      'date': date,
+      'date': date.isNotEmpty ? DateHelper.convertDateFromBRToUS(date) : '',
       'description': description,
       'category': eventType?.index,
       'status': eventStatus?.index,
@@ -68,7 +69,9 @@ class EventModel {
     return EventModel(
       id: map['_id'] ?? '',
       name: map['title'] ?? '',
-      date: map['date'] ?? '',
+      date: map.containsKey('date')
+          ? DateHelper.convertDateFromUSToBR(map['date'])
+          : '',
       description: map['description'] ?? '',
       eventType: EventType.values.elementAt(map['category'] ?? 0),
       eventStatus: EventStatus.values.elementAt(map['status'] ?? 0),

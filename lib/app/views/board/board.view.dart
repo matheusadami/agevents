@@ -3,6 +3,7 @@ import 'package:agevents/app/blocs/board/board.event.dart';
 import 'package:agevents/app/blocs/board/board.state.dart';
 import 'package:agevents/app/models/graphic.model.dart';
 import 'package:agevents/app/views/board/components/graphic.widget.dart';
+import 'package:agevents/core/enums/event.status.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
@@ -98,8 +99,8 @@ class BoardViewBody extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
-                    children: const [
-                      BoardEventCard(
+                    children: [
+                      const BoardEventCard(
                         qtde: 12,
                         label: 'Total de Eventos',
                         icon: FontAwesomeIcons.barsStaggered,
@@ -108,20 +109,20 @@ class BoardViewBody extends StatelessWidget {
                       BoardEventCard(
                         qtde: 5,
                         label: 'Completo',
-                        icon: FontAwesomeIcons.solidCircleCheck,
-                        iconColor: AppColors.secondary,
+                        icon: EventStatus.completed.iconData,
+                        iconColor: EventStatus.completed.color,
                       ),
                       BoardEventCard(
                         qtde: 7,
                         label: 'Em andamento',
-                        icon: FontAwesomeIcons.spinner,
-                        iconColor: AppColors.primary,
+                        icon: EventStatus.doing.iconData,
+                        iconColor: EventStatus.doing.color,
                       ),
                       BoardEventCard(
                         qtde: 20,
                         label: 'Pendente',
-                        icon: FontAwesomeIcons.solidClock,
-                        iconColor: AppColors.tertiary,
+                        icon: EventStatus.pending.iconData,
+                        iconColor: EventStatus.pending.color,
                       ),
                     ],
                   ),
