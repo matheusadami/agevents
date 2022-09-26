@@ -93,21 +93,19 @@ class EventCreateFormBody extends StatelessWidget {
                     final cName = current.eventModel.name;
                     return pName != cName;
                   },
-                  builder: (context, state) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                  builder: (context, state) => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
                     child: TextFormInputWidget(
                       hintText: 'Nome',
-                      fillColor: AppColors.gray.withOpacity(0.3),
                       helperText: 'Informe o nome do evento',
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
                   child: TextFormInputWidget(
                     icon: FontAwesomeIcons.solidCalendarCheck,
                     hintText: 'Data',
-                    fillColor: AppColors.gray.withOpacity(0.3),
                     helperText: 'Informe a data do evento',
                   ),
                 ),
@@ -116,7 +114,6 @@ class EventCreateFormBody extends StatelessWidget {
                   child: TextFormInputWidget(
                     onTap: () {},
                     hintText: 'Descrição',
-                    fillColor: AppColors.gray.withOpacity(0.3),
                     helperText: 'Informe a descrição do evento',
                     isTextArea: true,
                   ),

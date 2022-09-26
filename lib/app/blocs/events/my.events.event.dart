@@ -2,36 +2,34 @@ import 'package:agevents/core/enums/event.priority.dart';
 import 'package:agevents/core/enums/event.type.dart';
 import 'package:agevents/core/helpers/date.helper.dart';
 
-abstract class MyEventsEvent {
-  const MyEventsEvent();
-}
+abstract class MyEventsEvent {}
 
 class SearchMyEventsEvent extends MyEventsEvent {
-  String name;
-  String finalDate;
-  String initialDate;
-  EventType? eventType;
-  EventPriority? eventPriority;
+  String paramName;
+  String paramFinalDate;
+  String paramInitialDate;
+  EventType? paramEventType;
+  EventPriority? paramEventPriority;
 
   SearchMyEventsEvent({
-    this.name = '',
-    this.finalDate = '',
-    this.initialDate = '',
-    this.eventType,
-    this.eventPriority,
+    this.paramName = '',
+    this.paramFinalDate = '',
+    this.paramInitialDate = '',
+    this.paramEventType,
+    this.paramEventPriority,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'title': name,
-      'finalDate': finalDate.isNotEmpty
-          ? DateHelper.convertDateFromBRToUS(finalDate)
+      'title': paramName,
+      'finalDate': paramFinalDate.isNotEmpty
+          ? DateHelper.convertDateFromBRToUS(paramFinalDate)
           : '',
-      'initialDate': initialDate.isNotEmpty
-          ? DateHelper.convertDateFromBRToUS(initialDate)
+      'initialDate': paramInitialDate.isNotEmpty
+          ? DateHelper.convertDateFromBRToUS(paramInitialDate)
           : '',
-      'category': eventType?.index,
-      'priority': eventPriority?.index,
+      'category': paramEventType?.index,
+      'priority': paramEventPriority?.index,
     };
   }
 }

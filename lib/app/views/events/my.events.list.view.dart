@@ -2,6 +2,7 @@ import 'package:agevents/app/blocs/events/my.events.bloc.dart';
 import 'package:agevents/app/blocs/events/my.events.event.dart';
 import 'package:agevents/app/blocs/events/my.events.state.dart';
 import 'package:agevents/app/models/event.model.dart';
+import 'package:agevents/app/views/events/components/button.filter.events.dart';
 import 'package:agevents/app/views/events/components/filter.events.dialog.dart';
 import 'package:agevents/app/views/events/sheet/event.sheet.view.dart';
 import 'package:agevents/core/components/event.list.view.dart';
@@ -44,7 +45,8 @@ class MyEventsListView extends StatelessWidget {
                 );
               case LoadedMyEventsState:
                 return MyEventsViewBody(
-                  events: (state as LoadedMyEventsState).events,
+                  state: (state as LoadedMyEventsState),
+                  events: (state).events,
                 );
               case ExceptionMyEventsState:
                 return Center(
@@ -69,27 +71,45 @@ class MyEventsListView extends StatelessWidget {
 }
 
 class MyEventsViewBody extends StatelessWidget {
-  const MyEventsViewBody({Key? key, required this.events}) : super(key: key);
+  const MyEventsViewBody({
+    Key? key,
+    required this.events,
+    required this.state,
+  }) : super(key: key);
 
   final List<EventModel> events;
+  final LoadedMyEventsState state;
 
-  void onTapButtonFilter(BuildContext context) {
+  void onTapButtonFilter(BuildContext context) async {
     showDialog(
       context: context,
       builder: (context) => const FilterEventsDialog(),
     );
   }
 
-  void onTapEvent(EventModel eventModel, BuildContext context) {
-    showModalBottomSheet(
+  void onTapEvent(EventModel eventModel, BuildContext context) async {
+    final myEventsBloc = context.read<MyEventsBloc>();
+
+    await showModalBottomSheet<bool>(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(25),
         ),
       ),
       context: context,
-      builder: (context) => EventSheetView(eventModel: eventModel),
+      builder: (_) => EventSheetView(eventModel: eventModel),
     );
+
+    // Loading the user's events
+    final searchEvents = SearchMyEventsEvent(
+      paramName: state.paramName,
+      paramFinalDate: state.paramFinalDate,
+      paramInitialDate: state.paramInitialDate,
+      paramEventType: state.paramEventType,
+      paramEventPriority: state.paramEventPriority,
+    );
+
+    myEventsBloc.add(searchEvents);
   }
 
   @override
@@ -121,49 +141,6 @@ class MyEventsViewBody extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ButtonFilterEvents extends StatelessWidget {
-  const ButtonFilterEvents({
-    Key? key,
-    required this.onTap,
-  }) : super(key: key);
-
-  final void Function() onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(25),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.gray.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 12,
-          ),
-          child: Row(
-            children: [
-              const Icon(
-                FontAwesomeIcons.filter,
-                color: AppColors.dark,
-                size: 16,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Filtros',
-                style: AppTextStyles.verySmallDarkSemiBold,
-              )
-            ],
-          ),
-        ),
       ),
     );
   }

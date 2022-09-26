@@ -1,6 +1,7 @@
 import 'package:agevents/app/models/event.model.dart';
-import 'package:agevents/app/views/events/sheet/event.sheet.view.dart';
+import 'package:agevents/core/components/clip.event.date.dart';
 import 'package:agevents/core/components/clip.event.priority.dart';
+import 'package:agevents/core/components/clip.event.status.dart';
 import 'package:agevents/core/components/clip.event.type.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
@@ -57,7 +58,7 @@ class EventListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ClipEventDate(eventModel: eventModel),
-                    ClipEventStatus(eventModel: eventModel),
+                    ClipEventStatus(eventStatus: eventModel.eventStatus!),
                   ],
                 ),
               ),

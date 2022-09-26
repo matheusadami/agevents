@@ -1,10 +1,18 @@
+import 'package:agevents/app/blocs/events/sheet/event.sheet.bloc.dart';
+import 'package:agevents/app/blocs/events/sheet/event.sheet.event.dart';
+import 'package:agevents/app/blocs/events/sheet/event.sheet.state.dart';
 import 'package:agevents/app/models/event.model.dart';
+import 'package:agevents/app/views/events/sheet/components/confirm.dialog.remove.event.dart';
+import 'package:agevents/core/components/clip.event.date.dart';
 import 'package:agevents/core/components/clip.event.priority.dart';
+import 'package:agevents/core/components/clip.event.status.dart';
 import 'package:agevents/core/components/clip.event.type.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
+import 'package:agevents/core/enums/event.status.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class EventSheetView extends StatelessWidget {
@@ -14,8 +22,73 @@ class EventSheetView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<EventSheetBloc>(
+      create: (context) => EventSheetBloc(eventModel),
+      child: BlocConsumer<EventSheetBloc, EventSheetState>(
+        listener: (context, state) {
+          if (state is DismissBottomSheetEventSheetState) {
+            Navigator.pop(context);
+          }
+        },
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case FormEventSheetState:
+              return EventSheetBodyView(
+                eventModel: (state as FormEventSheetState).eventModel,
+              );
+            case LoadingEventSheetState:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+          }
+
+          return Container();
+        },
+      ),
+    );
+  }
+}
+
+class EventSheetBodyView extends StatelessWidget {
+  EventSheetBodyView({super.key, required this.eventModel});
+
+  final EventModel eventModel;
+
+  final List<EventStatus> optionsEventStatus = [
+    EventStatus.pending,
+    EventStatus.doing,
+    EventStatus.completed,
+  ];
+
+  void onChangeEventStatus(EventStatus? eventStatus, BuildContext context) {
+    if (eventStatus != null) {
+      final changeStatusEvent = ChangeStatusEventSheetEvent(
+        eventModel: eventModel,
+        eventStatus: eventStatus,
+      );
+      context.read<EventSheetBloc>().add(changeStatusEvent);
+    }
+  }
+
+  void onTapRemoveEvent(BuildContext context) async {
+    final eventSheetBloc = context.read<EventSheetBloc>();
+
+    final isConfirmed = await showDialog<bool>(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => const ConfirmDialogRemoveEvent(),
+    );
+
+    if (isConfirmed ?? false) {
+      final removeEvent = RemoveEventSheetEvent(eventModel: eventModel);
+      eventSheetBloc.add(removeEvent);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
@@ -45,7 +118,23 @@ class EventSheetView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ClipEventDate(eventModel: eventModel),
-                  ClipEventStatus(eventModel: eventModel),
+                  DropdownButton<EventStatus>(
+                    isDense: true,
+                    value: eventModel.eventStatus!,
+                    icon: const Icon(FontAwesomeIcons.caretDown, size: 16),
+                    items:
+                        optionsEventStatus.map<DropdownMenuItem<EventStatus>>(
+                      (e) {
+                        return DropdownMenuItem<EventStatus>(
+                          value: e,
+                          child: ClipEventStatus(
+                            eventStatus: e,
+                          ),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (status) => onChangeEventStatus(status, context),
+                  ),
                 ],
               ),
             ),
@@ -82,84 +171,13 @@ class EventSheetView extends StatelessWidget {
                   color: AppColors.white,
                 ),
                 label: 'Remover',
-                onTap: () {},
+                onTap: () => onTapRemoveEvent(context),
                 backgroundColor: AppColors.red,
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class ClipEventStatus extends StatelessWidget {
-  const ClipEventStatus({
-    Key? key,
-    required this.eventModel,
-  }) : super(key: key);
-
-  final EventModel eventModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          eventModel.eventStatus!.iconData,
-          size: 16,
-          color: eventModel.eventStatus!.color,
-        ),
-        const SizedBox(width: 10),
-        Text(
-          eventModel.eventStatus!.label,
-          style: AppTextStyles.verySmallDarkSemiBold,
-        ),
-      ],
-    );
-  }
-}
-
-class ClipEventDate extends StatelessWidget {
-  const ClipEventDate({
-    Key? key,
-    required this.eventModel,
-  }) : super(key: key);
-
-  final EventModel eventModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(right: 8),
-          child: Icon(
-            FontAwesomeIcons.solidCalendarCheck,
-            size: 16,
-            color: AppColors.darkGray,
-          ),
-        ),
-        Text(
-          eventModel.date,
-          style: AppTextStyles.verySmallDarGraykSemiBold,
-        ),
-      ],
-    );
-  }
-}
-
-class CustomDivider extends StatelessWidget {
-  const CustomDivider({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.gray,
-      width: 2,
-      height: 24,
     );
   }
 }

@@ -30,7 +30,16 @@ class MyEventsBloc extends Bloc<MyEventsEvent, MyEventsState> {
       final events = await eventsRepository.searchEventsFromUser(variables);
       final convertEvents = events.map((e) => EventModel.fromMap(e)).toList();
 
-      emit(LoadedMyEventsState(events: convertEvents));
+      emit(
+        LoadedMyEventsState(
+          events: convertEvents,
+          paramName: event.paramName,
+          paramFinalDate: event.paramFinalDate,
+          paramInitialDate: event.paramInitialDate,
+          paramEventType: event.paramEventType,
+          paramEventPriority: event.paramEventPriority,
+        ),
+      );
     } on CustomException catch (e) {
       AlertsHelper.showWarnSnackBar(e.message);
       emit(ExceptionMyEventsState(e.message));

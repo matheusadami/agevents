@@ -58,4 +58,50 @@ class EventsRepository implements IEventsRepository {
 
     return events;
   }
+
+  @override
+  Future<bool> changeStatus(Map<String, dynamic> variables) async {
+    final stringMutation = graphQLService.buildQueryOperation(
+      operationGraphQL: TypeOperationGraphQL.mutation,
+      operationName: 'ChangeStatusEvent',
+      paramsOperation: {
+        r'$eventId': 'ID!',
+        r'$status': 'Int!',
+      },
+      eventName: 'changeStatusEvent',
+      paramsEvent: {
+        'eventId': r'$eventId',
+        'status': r'$status',
+      },
+      returnFields: [
+        'isChanged',
+      ],
+    );
+
+    await graphQLService.send(stringMutation, variables);
+
+    return true;
+  }
+
+  @override
+  Future<bool> removeEvent(Map<String, dynamic> variables) async {
+    final stringMutation = graphQLService.buildQueryOperation(
+      operationGraphQL: TypeOperationGraphQL.mutation,
+      operationName: 'RemoveEvent',
+      paramsOperation: {
+        r'$eventId': 'ID!',
+      },
+      eventName: 'removeEvent',
+      paramsEvent: {
+        'eventId': r'$eventId',
+      },
+      returnFields: [
+        'isRemoved',
+      ],
+    );
+
+    await graphQLService.send(stringMutation, variables);
+
+    return true;
+  }
 }
