@@ -32,12 +32,10 @@ class MyEventsBloc extends Bloc<MyEventsEvent, MyEventsState> {
 
       emit(
         LoadedMyEventsState(
-          events: convertEvents,
+          events: List.from(convertEvents),
           paramName: event.paramName,
           paramFinalDate: event.paramFinalDate,
           paramInitialDate: event.paramInitialDate,
-          paramEventType: event.paramEventType,
-          paramEventPriority: event.paramEventPriority,
         ),
       );
     } on CustomException catch (e) {

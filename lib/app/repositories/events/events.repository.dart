@@ -47,7 +47,7 @@ class EventsRepository implements IEventsRepository {
       ],
     );
 
-    final data = await graphQLService.send(stringQuery, variables);
+    final data = await graphQLService.query(stringQuery, variables);
 
     List<Map<String, dynamic>> events = [];
     if (data.containsKey('searchEventsFromUser')) {
@@ -78,7 +78,7 @@ class EventsRepository implements IEventsRepository {
       ],
     );
 
-    await graphQLService.send(stringMutation, variables);
+    await graphQLService.mutation(stringMutation, variables);
 
     return true;
   }
@@ -100,7 +100,7 @@ class EventsRepository implements IEventsRepository {
       ],
     );
 
-    await graphQLService.send(stringMutation, variables);
+    await graphQLService.mutation(stringMutation, variables);
 
     return true;
   }

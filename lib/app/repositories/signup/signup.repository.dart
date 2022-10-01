@@ -33,6 +33,6 @@ class SignUpRepository implements ISignUpRepository {
       returnFields: ['_id', 'name', 'phone', 'email'],
     );
 
-    await graphQLService.send(stringMutation, variables);
+    await graphQLService.mutation(stringMutation, variables);
   }
 }

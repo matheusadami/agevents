@@ -40,7 +40,7 @@ class FotgotPasswordRepository implements IForgotPasswordRepository {
       returnFields: ['_id', 'name', 'email', 'phone'],
     );
 
-    final data = await graphQLService.send(stringQuery, variables);
+    final data = await graphQLService.query(stringQuery, variables);
 
     return data['getUserByPhone'] ?? {};
   }
@@ -81,7 +81,7 @@ class FotgotPasswordRepository implements IForgotPasswordRepository {
     );
 
     final variables = {'userId': userId, 'password': newPassword};
-    await graphQLService.send(stringMutation, variables);
+    await graphQLService.mutation(stringMutation, variables);
 
     return true;
   }

@@ -1,5 +1,5 @@
-import 'package:agevents/core/components/clip.event.priority.dart';
-import 'package:agevents/core/components/clip.event.type.dart';
+import 'package:agevents/app/blocs/events/my.events.bloc.dart';
+import 'package:agevents/app/blocs/events/my.events.event.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
 import 'package:agevents/core/enums/event.priority.dart';
@@ -7,29 +7,29 @@ import 'package:agevents/core/enums/event.type.dart';
 import 'package:agevents/core/helpers/date.helper.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class FilterEventsDialog extends StatefulWidget {
-  const FilterEventsDialog({super.key});
+  const FilterEventsDialog({super.key, required this.rootContext});
+
+  final BuildContext rootContext;
 
   @override
   State<FilterEventsDialog> createState() => _FilterEventsDialogState();
 }
 
 class _FilterEventsDialogState extends State<FilterEventsDialog> {
-  final TextEditingController nameController = TextEditingController(text: '');
+  String errorMessage = '';
 
-  final TextEditingController finalDateController = TextEditingController(
-    text: '',
-  );
+  final TextEditingController nameController = TextEditingController(text: '');
 
   final TextEditingController initialDateController = TextEditingController(
     text: '',
   );
 
-  EventType? eventType;
-
-  EventPriority? eventPriority;
+  final TextEditingController finalDateController = TextEditingController(
+    text: '',
+  );
 
   final List<EventType> optionsEventTypes = [
     EventType.personalEvent,
@@ -53,7 +53,7 @@ class _FilterEventsDialogState extends State<FilterEventsDialog> {
     final DateTime? picker = await showDatePicker(
       context: context,
       initialDate: initialDate,
-      firstDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year - 40),
       lastDate: DateTime(DateTime.now().year + 40),
     );
 
@@ -74,11 +74,31 @@ class _FilterEventsDialogState extends State<FilterEventsDialog> {
   void onTapFinalDate(BuildContext context) async {
     finalDateController.text = await openDatepicker(
       context,
-      initialDateController.text,
+      finalDateController.text,
     );
   }
 
-  void onTapFilterEvents(BuildContext context) {}
+  void onTapFilterEvents(BuildContext context) {
+    final eventName = nameController.text;
+    final initialDate = initialDateController.text;
+    final finalDate = finalDateController.text;
+
+    if (eventName.isEmpty && initialDate.isEmpty && finalDate.isEmpty) {
+      setState(() {
+        errorMessage = 'Por favor informe ao menos um filtro';
+      });
+    } else {
+      final searchEvents = SearchMyEventsEvent(
+        paramName: eventName,
+        paramFinalDate: finalDate,
+        paramInitialDate: initialDate,
+      );
+
+      widget.rootContext.read<MyEventsBloc>().add(searchEvents);
+
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,69 +137,16 @@ class _FilterEventsDialogState extends State<FilterEventsDialog> {
                   onTap: () => onTapFinalDate(context),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: DropdownButton<EventType>(
-                  isExpanded: true,
-                  hint: Text(
-                    'Categoria do Evento',
-                    style: AppTextStyles.verySmallDarGraykSemiBold,
-                  ),
-                  value: eventType,
-                  icon: const Icon(FontAwesomeIcons.caretDown, size: 16),
-                  items: optionsEventTypes.map<DropdownMenuItem<EventType>>(
-                    (e) {
-                      return DropdownMenuItem<EventType>(
-                        value: e,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: ClipEventType(
-                            eventType: e,
-                          ),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                  onChanged: (value) {
-                    setState(() => eventType = value);
-                  },
+              if (errorMessage.isNotEmpty)
+                ErrorMessageFilterEventsDialog(
+                  errorMessage: errorMessage,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: DropdownButton<EventPriority>(
-                  isExpanded: true,
-                  hint: Text(
-                    'Prioridade do Evento',
-                    style: AppTextStyles.verySmallDarGraykSemiBold,
-                  ),
-                  value: eventPriority,
-                  icon: const Icon(FontAwesomeIcons.caretDown, size: 16),
-                  items: optionsEventPriorities
-                      .map<DropdownMenuItem<EventPriority>>(
-                    (e) {
-                      return DropdownMenuItem<EventPriority>(
-                        value: e,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: ClipEventPriority(
-                            eventPriority: e,
-                          ),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                  onChanged: (value) {
-                    setState(() => eventPriority = value);
-                  },
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: SizedBox(
                   width: double.maxFinite,
                   child: CommonButtonWidget(
-                    label: 'Entrar',
+                    label: 'Filtrar',
                     onTap: () => onTapFilterEvents(context),
                   ),
                 ),
@@ -194,6 +161,20 @@ class _FilterEventsDialogState extends State<FilterEventsDialog> {
           ],
         );
       },
+    );
+  }
+}
+
+class ErrorMessageFilterEventsDialog extends StatelessWidget {
+  const ErrorMessageFilterEventsDialog({super.key, required this.errorMessage});
+
+  final String errorMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      errorMessage,
+      style: AppTextStyles.verySmallRedSemiBold,
     );
   }
 }

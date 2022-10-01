@@ -12,7 +12,7 @@ enum TypeOperationGraphQL {
 }
 
 class GraphQLClientService {
-  Future<Map<String, dynamic>> send(
+  Future<Map<String, dynamic>> query(
     String query,
     Map<String, dynamic> variables,
   ) async {
@@ -21,7 +21,35 @@ class GraphQLClientService {
       QueryOptions(
         document: gql(query),
         variables: variables,
-        pollInterval: const Duration(seconds: 10),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
+    );
+
+    await Future.doWhile(() => result.isLoading);
+
+    if (result.hasException) {
+      if (result.exception!.graphqlErrors.isNotEmpty) {
+        throw CustomException(result.exception!.graphqlErrors.first.message);
+      }
+
+      throw CustomException(
+        'Não foi possível estabelecer comunicação com o servidor',
+      );
+    }
+
+    return result.data ?? {};
+  }
+
+  Future<Map<String, dynamic>> mutation(
+    String mutation,
+    Map<String, dynamic> variables,
+  ) async {
+    final graphQlClient = GraphQLProvider.of(NavigationService.context!).value;
+    final result = await graphQlClient.mutate(
+      MutationOptions(
+        document: gql(mutation),
+        variables: variables,
+        fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 

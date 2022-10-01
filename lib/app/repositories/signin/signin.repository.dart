@@ -27,7 +27,7 @@ class SignInRepository implements ISignInRepository {
       returnFields: ['userId', 'token'],
     );
 
-    final data = await graphQLService.send(stringQuery, variables);
+    final data = await graphQLService.query(stringQuery, variables);
 
     return data['login'];
   }
@@ -49,7 +49,7 @@ class SignInRepository implements ISignInRepository {
       returnFields: ['_id', 'name', 'phone', 'email'],
     );
 
-    final data = await graphQLService.send(stringQuery, variables);
+    final data = await graphQLService.query(stringQuery, variables);
 
     return data['getUserById'];
   }

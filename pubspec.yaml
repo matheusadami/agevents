@@ -24,6 +24,7 @@ dependencies:
   graphql_flutter: ^5.1.0
   permission_handler: ^10.0.0
   shared_preferences: ^2.0.15
+  lottie: ^1.4.3
 
 dev_dependencies:
   flutter_test:
@@ -37,3 +38,4 @@ flutter:
 
   assets:
     - lib/assets/
+    - lib/assets/animations/

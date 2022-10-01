@@ -32,18 +32,11 @@ class EventSheetBloc extends Bloc<EventSheetEvent, EventSheetState> {
 
       await eventsRepository.changeStatus(variables);
 
-      AlertsHelper.showSuccessSnackBar(
-        'Situação do evento alterada',
-        isRemoveHorizontalMargin: true,
-      );
-      emit(FormEventSheetState(
-        eventModel: event.eventModel.copyWith(
-          eventStatus: event.eventStatus,
-        ),
-      ));
+      AlertsHelper.showSuccessSnackBar('Situação do evento alterada');
+      emit(DismissBottomSheetEventSheetState());
     } catch (e) {
       AlertsHelper.showWarnSnackBar(
-        'Não foi pssível alterar a situação do evento',
+        'Não foi possível alterar a situação do evento',
         isRemoveHorizontalMargin: true,
       );
       emit(FormEventSheetState(
@@ -68,7 +61,7 @@ class EventSheetBloc extends Bloc<EventSheetEvent, EventSheetState> {
       emit(DismissBottomSheetEventSheetState());
     } catch (e) {
       AlertsHelper.showWarnSnackBar(
-        'Não foi pssível remover o evento',
+        'Não foi possível remover o evento',
         isRemoveHorizontalMargin: true,
       );
       emit(FormEventSheetState(eventModel: event.eventModel));
