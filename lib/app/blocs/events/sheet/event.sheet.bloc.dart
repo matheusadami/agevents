@@ -3,7 +3,7 @@ import 'package:agevents/app/blocs/events/sheet/event.sheet.state.dart';
 import 'package:agevents/app/models/event.model.dart';
 import 'package:agevents/app/repositories/events/interface.events.repository.dart';
 import 'package:agevents/core/helpers/alerts.helper.dart';
-import 'package:agevents/core/services/navigator.service.dart';
+import 'package:agevents/core/services/navigation.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,5 +1,5 @@
 import 'package:agevents/core/helpers/custom.exception.dart';
-import 'package:agevents/core/services/navigator.service.dart';
+import 'package:agevents/core/services/navigation.service.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 enum TypeOperationGraphQL {

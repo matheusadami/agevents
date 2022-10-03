@@ -6,31 +6,37 @@ import 'package:flutter/services.dart';
 class TextFormInputWidget extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
-  final void Function()? onTap;
   final String? helperText;
   final String? hintText;
   final Color? fillColor;
   final bool autofocus;
   final IconData? icon;
   final bool isTextArea;
-  final TextAlign textAlign;
   final bool isObscureText;
+  final TextAlign textAlign;
+  final String? initialValue;
+  final void Function()? onTap;
   final List<TextInputFormatter>? inputFormatters;
+  final void Function(String value)? onChanged;
+  final String? Function(String?)? validator;
 
   const TextFormInputWidget({
     Key? key,
-    this.icon,
-    this.onTap,
-    this.hintText,
-    this.helperText,
-    this.autofocus = false,
-    this.isTextArea = false,
-    this.keyboardType = TextInputType.text,
     this.controller,
+    this.keyboardType = TextInputType.text,
+    this.helperText,
+    this.hintText,
     this.fillColor,
-    this.textAlign = TextAlign.start,
-    this.inputFormatters,
+    this.autofocus = false,
+    this.icon,
+    this.isTextArea = false,
     this.isObscureText = false,
+    this.textAlign = TextAlign.start,
+    this.initialValue,
+    this.onTap,
+    this.inputFormatters,
+    this.onChanged,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -38,6 +44,9 @@ class TextFormInputWidget extends StatelessWidget {
     return TextFormField(
       style: AppTextStyles.smallDarkSemiBold,
       onTap: onTap,
+      initialValue: initialValue,
+      validator: validator,
+      onChanged: onChanged,
       minLines: isTextArea ? 5 : 1,
       maxLines: isTextArea ? 5 : 1,
       textAlign: textAlign,

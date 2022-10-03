@@ -1,4 +1,4 @@
-import 'package:agevents/core/services/navigator.service.dart';
+import 'package:agevents/core/services/navigation.service.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:flutter/material.dart';
 

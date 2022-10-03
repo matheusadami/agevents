@@ -126,8 +126,13 @@ class _FeedViewState extends State<FeedView> {
                           builder: (context, state) {
                             switch (state.runtimeType) {
                               case LoadingFeedState:
-                                return const Center(
-                                  child: CircularProgressIndicator(),
+                                return const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
                                 );
                               case LoadedFeedState:
                                 return FeedBodyView(

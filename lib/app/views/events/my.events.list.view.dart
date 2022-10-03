@@ -4,6 +4,7 @@ import 'package:agevents/app/blocs/events/my.events.state.dart';
 import 'package:agevents/app/models/event.model.dart';
 import 'package:agevents/app/views/events/components/button.filter.events.dart';
 import 'package:agevents/app/views/events/components/button.remove.filters.events.dart';
+import 'package:agevents/app/views/events/components/error.message.loading.events.dart';
 import 'package:agevents/app/views/events/components/events.not.found.dart';
 import 'package:agevents/app/views/events/components/filter.events.dialog.dart';
 import 'package:agevents/app/views/events/sheet/event.sheet.view.dart';
@@ -58,11 +59,8 @@ class _MyEventsListViewState extends State<MyEventsListView> {
                   rootContext: context,
                 );
               case ExceptionMyEventsState:
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Text((state as ExceptionMyEventsState).message),
-                  ),
+                return const Center(
+                  child: ErrorMessageLoadingEvents(),
                 );
             }
 

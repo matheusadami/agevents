@@ -4,7 +4,7 @@ import 'package:agevents/app/blocs/signup/signup.state.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
 import 'package:agevents/core/helpers/alerts.helper.dart';
-import 'package:agevents/core/services/navigator.service.dart';
+import 'package:agevents/core/services/navigation.service.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/gestures.dart';

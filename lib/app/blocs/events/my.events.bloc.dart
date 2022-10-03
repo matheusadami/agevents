@@ -5,7 +5,7 @@ import 'package:agevents/app/repositories/events/interface.events.repository.dar
 import 'package:agevents/core/helpers/alerts.helper.dart';
 import 'package:agevents/core/helpers/custom.exception.dart';
 import 'package:agevents/core/providers/auth.user.provider.dart';
-import 'package:agevents/core/services/navigator.service.dart';
+import 'package:agevents/core/services/navigation.service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyEventsBloc extends Bloc<MyEventsEvent, MyEventsState> {

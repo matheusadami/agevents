@@ -1,6 +1,6 @@
 import 'package:agevents/app/repositories/events/interface.events.repository.dart';
 import 'package:agevents/app/services/graphql.client.service.dart';
-import 'package:agevents/core/services/navigator.service.dart';
+import 'package:agevents/core/services/navigation.service.dart';
 import 'package:provider/provider.dart';
 
 class EventsRepository implements IEventsRepository {

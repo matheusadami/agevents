@@ -5,7 +5,7 @@ import 'package:agevents/app/views/signin/signin.view.dart';
 import 'package:agevents/app/views/signup/signup.view.dart';
 import 'package:agevents/core/providers/dependency.injection.provider.dart';
 import 'package:agevents/core/providers/graphql.client.provider.dart';
-import 'package:agevents/core/services/navigator.service.dart';
+import 'package:agevents/core/services/navigation.service.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:flutter/material.dart';
 

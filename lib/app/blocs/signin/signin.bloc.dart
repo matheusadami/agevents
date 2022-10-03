@@ -6,7 +6,7 @@ import 'package:agevents/app/services/local.storage.service.dart';
 import 'package:agevents/core/helpers/alerts.helper.dart';
 import 'package:agevents/core/helpers/custom.exception.dart';
 import 'package:agevents/core/providers/auth.user.provider.dart';
-import 'package:agevents/core/services/navigator.service.dart';
+import 'package:agevents/core/services/navigation.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

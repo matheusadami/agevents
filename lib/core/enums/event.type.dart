@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum EventType {
-  personalEvent('Pessoal', AppColors.yellow, FontAwesomeIcons.solidUser),
+  personalEvent('Pessoal', AppColors.purple, FontAwesomeIcons.solidUser),
   studyEvent('Estudos', AppColors.blue, FontAwesomeIcons.book),
   workEvent('Trabalho', AppColors.darkBlue, FontAwesomeIcons.briefcase);
 

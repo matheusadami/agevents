@@ -1,25 +1,49 @@
-import 'package:agevents/app/models/event.model.dart';
+import 'dart:async';
 
-abstract class EventState {
-  final EventModel eventModel;
+import 'package:agevents/core/enums/event.priority.dart';
+import 'package:agevents/core/enums/event.type.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:rxdart/rxdart.dart';
 
-  EventState(this.eventModel);
-}
+abstract class EventState {}
 
 class FormEventState extends EventState {
-  FormEventState(super.eventModel);
+  final formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController(text: '');
+  final dateController = TextEditingController(text: '');
+  final descriptionController = TextEditingController(text: '');
+  final eventTypeController = BehaviorSubject<EventType?>();
+  final eventPriorityController = BehaviorSubject<EventPriority?>();
+
+  String? validatorName(String value) {
+    return value.isEmpty ? 'Por favor informe o nome do evento' : null;
+  }
+
+  String? validatorDate(String value) {
+    return value.isEmpty ? 'Por favor informe a data do evento' : null;
+  }
+
+  String? validatorDescription(String value) {
+    return value.isEmpty ? 'Por favor informe a descrição do evento' : null;
+  }
+
+  Future<String?> validatorEventType(EventType? eventType) async {
+    const message = 'Por favor informe a categoria do evento';
+    return eventType == null ? message : null;
+  }
+
+  Future<String?> validatorEventPriority(EventPriority? eventPriority) async {
+    const message = 'Por favor informe a prioridade do evento';
+    return eventPriority == null ? message : null;
+  }
 }
 
-class LoadingEventState extends EventState {
-  LoadingEventState(super.eventModel);
-}
+class LoadingEventState extends EventState {}
 
-class SuccessEventState extends EventState {
-  SuccessEventState(super.eventModel);
-}
+class SuccessCreatedEventState extends EventState {}
 
 class ExceptionEventState extends EventState {
   final String message;
 
-  ExceptionEventState(super.eventModel, this.message);
+  ExceptionEventState(this.message);
 }

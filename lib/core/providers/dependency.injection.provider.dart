@@ -1,10 +1,11 @@
 import 'package:agevents/app/blocs/board/board.bloc.dart';
-import 'package:agevents/app/blocs/events/create/event.bloc.dart';
 import 'package:agevents/app/blocs/graphic/graphic.bloc.dart';
 import 'package:agevents/app/blocs/signin/signin.bloc.dart';
 import 'package:agevents/app/blocs/signup/signup.bloc.dart';
 import 'package:agevents/app/repositories/events/events.repository.dart';
 import 'package:agevents/app/repositories/events/interface.events.repository.dart';
+import 'package:agevents/app/repositories/feed/feed.repository.dart';
+import 'package:agevents/app/repositories/feed/interface.feed.repository.dart';
 import 'package:agevents/app/repositories/forgot-password/forgot.password.repository.dart';
 import 'package:agevents/app/repositories/forgot-password/interface.forgot.password.repository.dart';
 import 'package:agevents/app/repositories/signin/interface.signin.repository.dart';
@@ -59,6 +60,9 @@ class DependencyInjectionProvider extends StatelessWidget {
         Provider<IEventsRepository>(
           create: (context) => EventsRepository(),
         ),
+        Provider<IFeedRepository>(
+          create: (context) => FeedRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -73,9 +77,6 @@ class DependencyInjectionProvider extends StatelessWidget {
           ),
           BlocProvider<GraphicBloc>(
             create: (context) => GraphicBloc(),
-          ),
-          BlocProvider<EventBloc>(
-            create: (context) => EventBloc(),
           ),
         ],
         child: child,
