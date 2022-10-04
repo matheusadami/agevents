@@ -8,6 +8,7 @@ import 'package:agevents/app/views/events/components/error.message.loading.event
 import 'package:agevents/app/views/events/components/events.not.found.dart';
 import 'package:agevents/app/views/events/components/filter.events.dialog.dart';
 import 'package:agevents/app/views/events/sheet/event.sheet.view.dart';
+import 'package:agevents/core/components/common.loading.widget.dart';
 import 'package:agevents/core/components/event.list.view.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
@@ -24,57 +25,62 @@ class MyEventsListView extends StatefulWidget {
 }
 
 class _MyEventsListViewState extends State<MyEventsListView> {
-  void onPressedCreateEvent(BuildContext context) {
-    Navigator.pushNamed(context, '/create-event');
+  void onPressedCreateEvent(BuildContext context) async {
+    final currentContext = context.read<MyEventsBloc>();
+    final isRefresh = await Navigator.pushNamed(
+      context,
+      '/create-event',
+    ) as bool?;
+
+    if (isRefresh ?? false) {
+      currentContext.add(SearchMyEventsEvent());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MyEventsBloc()..add(SearchMyEventsEvent()),
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Meus Eventos',
-            style: AppTextStyles.mediumDarkSemiBold,
-          ),
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: AppColors.white,
-            statusBarIconBrightness: Brightness.dark,
-          ),
-        ),
-        body: BlocConsumer<MyEventsBloc, MyEventsState>(
-          listener: (context, state) => {},
-          builder: (context, state) {
-            switch (state.runtimeType) {
-              case LoadingMyEventsState:
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              case LoadedMyEventsState:
-                return MyEventsViewBody(
-                  state: (state as LoadedMyEventsState),
-                  events: (state).events,
-                  rootContext: context,
-                );
-              case ExceptionMyEventsState:
-                return const Center(
-                  child: ErrorMessageLoadingEvents(),
-                );
-            }
-
-            return Container();
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          onPressed: () => onPressedCreateEvent(context),
-          child: const Icon(
-            FontAwesomeIcons.plus,
-            color: AppColors.white,
-          ),
-        ),
+      child: BlocBuilder<MyEventsBloc, MyEventsState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: Text(
+                'Meus Eventos',
+                style: AppTextStyles.mediumDarkSemiBold,
+              ),
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: AppColors.white,
+                statusBarIconBrightness: Brightness.dark,
+              ),
+            ),
+            body: (() {
+              switch (state.runtimeType) {
+                case LoadingMyEventsState:
+                  return const CommonLoadingWidget();
+                case LoadedMyEventsState:
+                  return MyEventsViewBody(
+                    state: (state as LoadedMyEventsState),
+                    events: (state).events,
+                    rootContext: context,
+                  );
+                case ExceptionMyEventsState:
+                  return const Center(
+                    child: ErrorMessageLoadingEvents(),
+                  );
+              }
+            }()),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              onPressed: () => onPressedCreateEvent(context),
+              child: const Icon(
+                FontAwesomeIcons.plus,
+                color: AppColors.white,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -106,7 +112,7 @@ class MyEventsViewBody extends StatelessWidget {
   void onTapEvent(EventModel eventModel, BuildContext context) async {
     final myEventsBloc = rootContext.read<MyEventsBloc>();
 
-    await showModalBottomSheet<bool>(
+    final isRefresh = await showModalBottomSheet<bool?>(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(25),
@@ -116,14 +122,16 @@ class MyEventsViewBody extends StatelessWidget {
       builder: (_) => EventSheetView(eventModel: eventModel),
     );
 
-    // Loading the user's events
-    final searchEvents = SearchMyEventsEvent(
-      paramName: state.paramName,
-      paramFinalDate: state.paramFinalDate,
-      paramInitialDate: state.paramInitialDate,
-    );
+    if (isRefresh ?? false) {
+      // Loading the user's events
+      final searchEvents = SearchMyEventsEvent(
+        paramName: state.paramName,
+        paramFinalDate: state.paramFinalDate,
+        paramInitialDate: state.paramInitialDate,
+      );
 
-    myEventsBloc.add(searchEvents);
+      myEventsBloc.add(searchEvents);
+    }
   }
 
   Future<void> onRefreshEvents(BuildContext context) async {

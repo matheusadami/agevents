@@ -2,6 +2,7 @@ import 'package:agevents/app/blocs/signup/signup.bloc.dart';
 import 'package:agevents/app/blocs/signup/signup.event.dart';
 import 'package:agevents/app/blocs/signup/signup.state.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
+import 'package:agevents/core/components/common.loading.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
 import 'package:agevents/core/helpers/alerts.helper.dart';
 import 'package:agevents/core/services/navigation.service.dart';
@@ -35,9 +36,7 @@ class SignUpView extends StatelessWidget {
                 case FormSignUpState:
                   return SignUpBody();
                 case LoadingSignUpState:
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  );
+                  return const CommonLoadingWidget();
               }
 
               return Container();

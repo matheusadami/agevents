@@ -6,7 +6,7 @@ enum EventPriority {
   low(
     'Baixa',
     AppColors.white,
-    AppColors.darkGreen,
+    AppColors.green,
     FontAwesomeIcons.caretDown,
   ),
   high(

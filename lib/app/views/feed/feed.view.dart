@@ -3,6 +3,7 @@ import 'package:agevents/app/blocs/feed/feed.event.dart';
 import 'package:agevents/app/blocs/feed/feed.state.dart';
 import 'package:agevents/app/models/event.model.dart';
 import 'package:agevents/app/views/feed/components/events.today.not.found.dart';
+import 'package:agevents/core/components/common.loading.widget.dart';
 import 'package:agevents/core/components/event.list.view.dart';
 import 'package:agevents/core/providers/auth.user.provider.dart';
 import 'package:agevents/core/providers/navigation.bar.provider.dart';
@@ -30,6 +31,10 @@ class _FeedViewState extends State<FeedView> {
     navigationBarProvider.onChangeCurrentPage(2);
   }
 
+  void onTapLogout(BuildContext context) {
+    context.read<FeedBloc>().add(LogoutFeedEvent(context));
+  }
+
   @override
   void didChangeDependencies() {
     navigationBarProvider = context.read<NavigationBarProvider>();
@@ -40,7 +45,7 @@ class _FeedViewState extends State<FeedView> {
   Widget build(BuildContext context) {
     final userName = context.read<AuthUserProvider>().firstUserName;
 
-    return BlocProvider(
+    return BlocProvider<FeedBloc>(
       create: (context) => FeedBloc()..add(LoadEventsTodayFeedEvent()),
       child: SafeArea(
         child: Center(
@@ -66,16 +71,23 @@ class _FeedViewState extends State<FeedView> {
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Icon(
+                          children: [
+                            const Icon(
                               FontAwesomeIcons.house,
                               size: 20,
                               color: AppColors.white,
                             ),
-                            Icon(
-                              FontAwesomeIcons.solidBell,
-                              size: 20,
-                              color: AppColors.white,
+                            BlocBuilder<FeedBloc, FeedState>(
+                              builder: (context, state) {
+                                return GestureDetector(
+                                  onTap: () => onTapLogout(context),
+                                  child: const Icon(
+                                    FontAwesomeIcons.rightFromBracket,
+                                    size: 20,
+                                    color: AppColors.white,
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -126,14 +138,7 @@ class _FeedViewState extends State<FeedView> {
                           builder: (context, state) {
                             switch (state.runtimeType) {
                               case LoadingFeedState:
-                                return const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
+                                return const CommonLoadingWidget();
                               case LoadedFeedState:
                                 return FeedBodyView(
                                   events: (state as LoadedFeedState).events,

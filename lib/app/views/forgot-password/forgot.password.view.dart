@@ -3,6 +3,7 @@ import 'package:agevents/app/blocs/forgot-password/forgot-password.state.dart';
 import 'package:agevents/app/views/forgot-password/change.password.view.dart';
 import 'package:agevents/app/views/forgot-password/recovery.code.view.dart';
 import 'package:agevents/app/views/forgot-password/send.sms.view.dart';
+import 'package:agevents/core/components/common.loading.widget.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,15 +58,10 @@ class ForgotPasswordView extends StatelessWidget {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: SafeArea(
-            child: BlocConsumer<ForgotPassBloc, ForgotPassState>(
-              listener: (context, state) {
-                if (state is CompletedAllStepsForgotPassState) {}
-              },
+            child: BlocBuilder<ForgotPassBloc, ForgotPassState>(
               builder: (context, state) {
                 if (state is LoadingStepForgotPassState) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const CommonLoadingWidget();
                 }
 
                 return Stepper(

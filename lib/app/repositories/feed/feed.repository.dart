@@ -1,6 +1,5 @@
 import 'package:agevents/app/repositories/feed/interface.feed.repository.dart';
 import 'package:agevents/app/services/graphql.client.service.dart';
-import 'package:agevents/core/helpers/date.helper.dart';
 import 'package:agevents/core/services/navigation.service.dart';
 import 'package:provider/provider.dart';
 
@@ -41,9 +40,6 @@ class FeedRepository implements IFeedRepository {
         'priority',
       ],
     );
-
-    variables['initialDate'] = DateHelper.getCurrentDateUSFormat();
-    variables['finalDate'] = variables['initialDate'];
 
     final data = await graphQLService.query(stringQuery, variables);
 

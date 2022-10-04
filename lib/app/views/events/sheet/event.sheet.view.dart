@@ -8,6 +8,7 @@ import 'package:agevents/core/components/clip.event.priority.dart';
 import 'package:agevents/core/components/clip.event.status.dart';
 import 'package:agevents/core/components/clip.event.type.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
+import 'package:agevents/core/components/common.loading.widget.dart';
 import 'package:agevents/core/enums/event.status.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:agevents/core/theme/app.textstyles.dart';
@@ -27,7 +28,7 @@ class EventSheetView extends StatelessWidget {
       child: BlocConsumer<EventSheetBloc, EventSheetState>(
         listener: (context, state) {
           if (state is DismissBottomSheetEventSheetState) {
-            Navigator.pop(context);
+            Navigator.pop<bool?>(context, true);
           }
         },
         builder: (context, state) {
@@ -37,9 +38,7 @@ class EventSheetView extends StatelessWidget {
                 eventModel: (state as FormEventSheetState).eventModel,
               );
             case LoadingEventSheetState:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const CommonLoadingWidget();
           }
 
           return Container();

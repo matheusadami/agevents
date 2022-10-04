@@ -104,4 +104,38 @@ class EventsRepository implements IEventsRepository {
 
     return true;
   }
+
+  @override
+  Future<bool> create(Map<String, dynamic> variables) async {
+    final stringMutation = graphQLService.buildQueryOperation(
+      operationGraphQL: TypeOperationGraphQL.mutation,
+      operationName: 'CreateEventMobile',
+      paramsOperation: {
+        r'$userId': 'ID!',
+        r'$title': 'String!',
+        r'$description': 'String!',
+        r'$date': 'String!',
+        r'$status': 'Int!',
+        r'$category': 'Int!',
+        r'$priority': 'Int!',
+      },
+      eventName: 'createEventMobile',
+      paramsEvent: {
+        'userId': r'$userId',
+        'eventInputMobile': {
+          'title': r'$title',
+          'description': r'$description',
+          'date': r'$date',
+          'status': r'$status',
+          'category': r'$category',
+          'priority': r'$priority',
+        },
+      },
+      returnFields: ['_id'],
+    );
+
+    await graphQLService.mutation(stringMutation, variables);
+
+    return true;
+  }
 }

@@ -23,6 +23,9 @@ class MyEventsBloc extends Bloc<MyEventsEvent, MyEventsState> {
     try {
       emit(LoadingMyEventsState());
 
+      // Only for showing the loading animation...
+      await Future.delayed(const Duration(seconds: 1));
+
       final Map<String, dynamic> variables = {
         'userId': authUserProvider.currentUser.id
       }..addAll(event.toMap());
@@ -32,7 +35,7 @@ class MyEventsBloc extends Bloc<MyEventsEvent, MyEventsState> {
 
       emit(
         LoadedMyEventsState(
-          events: List.from(convertEvents),
+          events: List.from(convertEvents.reversed.toList()),
           paramName: event.paramName,
           paramFinalDate: event.paramFinalDate,
           paramInitialDate: event.paramInitialDate,

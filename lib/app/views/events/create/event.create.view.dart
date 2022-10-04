@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:agevents/app/blocs/events/create/event.bloc.dart';
 import 'package:agevents/app/blocs/events/create/event.event.dart';
 import 'package:agevents/app/blocs/events/create/event.state.dart';
-import 'package:agevents/app/views/events/create/components/options.event.priority.dart';
-import 'package:agevents/app/views/events/create/components/options.event.type.dart';
+import 'package:agevents/app/views/events/create/components/dropdown.event.priority.dart';
+import 'package:agevents/app/views/events/create/components/dropdown.event.type.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
+import 'package:agevents/core/components/common.loading.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
 import 'package:agevents/core/enums/event.priority.dart';
 import 'package:agevents/core/enums/event.type.dart';
@@ -18,14 +19,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class EventCreateView extends StatefulWidget {
-  const EventCreateView({Key? key}) : super(key: key);
+class EventCreateView extends StatelessWidget {
+  const EventCreateView({super.key});
 
-  @override
-  State<EventCreateView> createState() => _EventCreateViewState();
-}
-
-class _EventCreateViewState extends State<EventCreateView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<EventBloc>(
@@ -44,7 +40,7 @@ class _EventCreateViewState extends State<EventCreateView> {
         body: BlocConsumer<EventBloc, EventState>(
           listener: (context, state) {
             if (state is SuccessCreatedEventState) {
-              Navigator.pop(context);
+              Navigator.pop<bool>(context, true);
             }
           },
           builder: (context, state) {
@@ -52,7 +48,7 @@ class _EventCreateViewState extends State<EventCreateView> {
               case FormEventState:
                 return EventCreateFormBody(state: (state as FormEventState));
               case LoadingEventState:
-                return const Center(child: CircularProgressIndicator());
+                return const CommonLoadingWidget();
             }
 
             return Container();
@@ -64,7 +60,7 @@ class _EventCreateViewState extends State<EventCreateView> {
 }
 
 class EventCreateFormBody extends StatelessWidget {
-  const EventCreateFormBody({Key? key, required this.state}) : super(key: key);
+  const EventCreateFormBody({super.key, required this.state});
 
   final FormEventState state;
 
@@ -108,8 +104,8 @@ class EventCreateFormBody extends StatelessWidget {
   dynamic onTapSave(BuildContext context) async {
     if (state.formKey.currentState!.validate()) {
       final currentContext = context.read<EventBloc>();
-      final eventType = state.eventTypeController.stream.valueOrNull;
-      final eventPriority = state.eventPriorityController.stream.valueOrNull;
+      final eventType = state.eventTypeController.valueOrNull;
+      final eventPriority = state.eventPriorityController.valueOrNull;
 
       final messageEventType = await state.validatorEventType(eventType);
       if (messageEventType?.isNotEmpty ?? false) {
@@ -137,107 +133,103 @@ class EventCreateFormBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Form(
-          key: state.formKey,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: TextFormInputWidget(
-                      hintText: 'Nome',
-                      helperText: 'Informe o nome do evento',
-                      controller: state.nameController,
-                      validator: (value) => state.validatorName(value ?? ''),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: TextFormInputWidget(
-                      icon: FontAwesomeIcons.solidCalendarCheck,
-                      hintText: 'Data',
-                      helperText: 'Informe a data do evento',
-                      controller: state.dateController,
-                      validator: (value) => state.validatorDate(value ?? ''),
-                      onTap: () => onTapChooseDate(context),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: TextFormInputWidget(
-                      hintText: 'Descrição',
-                      helperText: 'Informe a descrição do evento',
-                      controller: state.descriptionController,
-                      isTextArea: true,
-                      validator: (value) => state.validatorDescription(
-                        value ?? '',
-                      ),
-                    ),
-                  ),
-                  StreamBuilder<EventType?>(
-                    stream: state.eventTypeController.stream,
-                    builder: (context, snapshot) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Selecione a Categoria',
-                              style: AppTextStyles.smallDarkSemiBold,
-                            ),
-                            OptionsEventTypeWidget(
-                              onChange: onChangeEventType,
-                              selectedType: snapshot.data?.index,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                  StreamBuilder<EventPriority?>(
-                    stream: state.eventPriorityController.stream,
-                    builder: (context, snapshot) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Selecione a Prioridade',
-                              style: AppTextStyles.smallDarkSemiBold,
-                            ),
-                            OptionsEventPriorityWidget(
-                              onChange: onChangeEventPriority,
-                              selectedType: snapshot.data?.index,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: SizedBox(
-                      width: double.maxFinite,
-                      child: CommonButtonWidget(
-                        label: 'Salvar',
-                        onTap: () => onTapSave(context),
-                      ),
-                    ),
-                  ),
-                ],
+    return Form(
+      key: state.formKey,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: TextFormInputWidget(
+                  hintText: 'Nome',
+                  helperText: 'Informe o nome do evento',
+                  controller: state.nameController,
+                  validator: (value) => state.validatorName(value ?? ''),
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: TextFormInputWidget(
+                  icon: FontAwesomeIcons.solidCalendarCheck,
+                  hintText: 'Data',
+                  helperText: 'Informe a data do evento',
+                  controller: state.dateController,
+                  validator: (value) => state.validatorDate(value ?? ''),
+                  onTap: () => onTapChooseDate(context),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: TextFormInputWidget(
+                  hintText: 'Descrição',
+                  helperText: 'Informe a descrição do evento',
+                  controller: state.descriptionController,
+                  isTextArea: true,
+                  validator: (value) => state.validatorDescription(
+                    value ?? '',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Selecione a Categoria',
+                      style: AppTextStyles.smallDarkSemiBold,
+                    ),
+                    StreamBuilder<EventType?>(
+                      stream: state.eventTypeController.stream,
+                      builder: (context, snapshot) {
+                        return DropdownEventType(
+                          onChange: onChangeEventType,
+                          eventType: snapshot.data,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Selecione a Prioridade',
+                      style: AppTextStyles.smallDarkSemiBold,
+                    ),
+                    StreamBuilder<EventPriority?>(
+                      stream: state.eventPriorityController.stream,
+                      builder: (context, snapshot) {
+                        return DropdownEventPriority(
+                          onChange: onChangeEventPriority,
+                          eventType: snapshot.data,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: SizedBox(
+                  width: double.maxFinite,
+                  child: CommonButtonWidget(
+                    label: 'Salvar',
+                    onTap: () => onTapSave(context),
+                  ),
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

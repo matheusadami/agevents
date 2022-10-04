@@ -2,6 +2,7 @@ import 'package:agevents/app/blocs/signin/signin.bloc.dart';
 import 'package:agevents/app/blocs/signin/signin.event.dart';
 import 'package:agevents/app/blocs/signin/signin.state.dart';
 import 'package:agevents/core/components/common.button.widget.dart';
+import 'package:agevents/core/components/common.loading.widget.dart';
 import 'package:agevents/core/components/text.form.input.dart';
 import 'package:agevents/core/services/navigation.service.dart';
 import 'package:agevents/core/theme/app.colors.dart';
@@ -33,9 +34,7 @@ class SignInView extends StatelessWidget {
                 case FormSignInState:
                   return SignInViewBody();
                 case LoadingSignInState:
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  );
+                  return const CommonLoadingWidget();
               }
 
               return Container();
@@ -148,18 +147,18 @@ class SignInViewBody extends StatelessWidget {
                   ),
                 ),
                 /*
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: DividerSignIn(size: size),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: ButtonSignInGoogle(
-                          size: size,
-                          onTap: () {},
-                        ),
-                      ),
-                      */
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: DividerSignIn(size: size),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: ButtonSignInGoogle(
+                    size: size,
+                    onTap: () {},
+                  ),
+                ),
+                */
               ],
             ),
           ),

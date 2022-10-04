@@ -1,6 +1,7 @@
 class DateHelper {
-  static String getCurrentDateUSFormat() {
-    DateTime currentDate = DateTime.now();
+  static String getCurrentDateUSFormat([Duration? duration]) {
+    final currentDate =
+        duration == null ? DateTime.now() : DateTime.now().add(duration);
     return currentDate.toString().substring(0, 10);
   }
 

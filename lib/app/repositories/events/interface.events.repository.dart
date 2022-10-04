@@ -4,4 +4,5 @@ abstract class IEventsRepository {
   );
   Future<bool> changeStatus(Map<String, dynamic> variables);
   Future<bool> removeEvent(Map<String, dynamic> variables);
+  Future<bool> create(Map<String, dynamic> variables);
 }
