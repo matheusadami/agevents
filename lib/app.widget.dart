@@ -1,4 +1,5 @@
 import 'package:agevents/app/views/events/create/event.create.view.dart';
+import 'package:agevents/app/views/events/update/event.update.view.dart';
 import 'package:agevents/app/views/forgot-password/forgot.password.view.dart';
 import 'package:agevents/app/views/home/home.view.dart';
 import 'package:agevents/app/views/signin/signin.view.dart';
@@ -43,6 +44,7 @@ class _AppWidgetState extends State<AppWidget> {
             '/forgot-password': (context) => const ForgotPasswordView(),
             '/home': (context) => const HomeView(),
             '/create-event': (context) => const EventCreateView(),
+            '/update-event': (context) => const EventUpdateView(),
           },
         ),
       ),

@@ -42,39 +42,17 @@ class _FilterEventsDialogState extends State<FilterEventsDialog> {
     EventPriority.high,
   ];
 
-  Future<String> openDatepicker(
-    BuildContext context,
-    String paramInitialDate,
-  ) async {
-    final initialDate = paramInitialDate.isEmpty
-        ? DateTime.now()
-        : DateHelper.createDateTimeFromBR(paramInitialDate);
-
-    final DateTime? picker = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: DateTime(DateTime.now().year - 40),
-      lastDate: DateTime(DateTime.now().year + 40),
-    );
-
-    if (picker != null) {
-      return DateHelper.convertDateFromUSToBR(picker.toString());
-    }
-
-    return '';
-  }
-
   void onTapInitialDate(BuildContext context) async {
-    initialDateController.text = await openDatepicker(
-      context,
+    initialDateController.text = await DateHelper.openDatePicker(
       initialDateController.text,
+      context,
     );
   }
 
   void onTapFinalDate(BuildContext context) async {
-    finalDateController.text = await openDatepicker(
-      context,
+    finalDateController.text = await DateHelper.openDatePicker(
       finalDateController.text,
+      context,
     );
   }
 

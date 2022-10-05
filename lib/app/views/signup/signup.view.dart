@@ -88,7 +88,6 @@ class SignUpBody extends StatelessWidget {
             flex: 10,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16),

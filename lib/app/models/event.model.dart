@@ -4,6 +4,7 @@ import 'package:agevents/core/enums/event.priority.dart';
 import 'package:agevents/core/enums/event.status.dart';
 import 'package:agevents/core/enums/event.type.dart';
 import 'package:agevents/core/helpers/date.helper.dart';
+import 'package:agevents/core/helpers/event.helper.dart';
 
 class EventModel {
   final String id;
@@ -50,9 +51,9 @@ class EventModel {
       'title': name,
       'date': date.isNotEmpty ? DateHelper.convertDateFromBRToUS(date) : '',
       'description': description,
-      'category': eventType?.index,
-      'status': eventStatus?.index,
-      'priority': eventPriority?.index,
+      'category': eventType?.value,
+      'status': eventStatus?.value,
+      'priority': eventPriority?.value,
     };
   }
 
@@ -69,13 +70,13 @@ class EventModel {
     return EventModel(
       id: map['_id'] ?? '',
       name: map['title'] ?? '',
+      description: map['description'] ?? '',
       date: map.containsKey('date')
           ? DateHelper.convertDateFromUSToBR(map['date'])
           : '',
-      description: map['description'] ?? '',
-      eventType: EventType.values.elementAt(map['category'] ?? 0),
-      eventStatus: EventStatus.values.elementAt(map['status'] ?? 0),
-      eventPriority: EventPriority.values.elementAt(map['priority'] ?? 0),
+      eventType: EventHelper.getEventTypeByValue(map['category']),
+      eventStatus: EventHelper.getEventStatusByValue(map['status']),
+      eventPriority: EventHelper.getEventPriorityByValue(map['priority']),
     );
   }
 

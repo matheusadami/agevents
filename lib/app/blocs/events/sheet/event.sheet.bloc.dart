@@ -10,13 +10,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EventSheetBloc extends Bloc<EventSheetEvent, EventSheetState> {
   late final IEventsRepository eventsRepository;
 
-  EventSheetBloc(EventModel eventModel)
-      : super(FormEventSheetState(eventModel: eventModel)) {
+  EventSheetBloc() : super(InitialStateEventSheetState()) {
     eventsRepository = NavigationService.context!.read<IEventsRepository>();
 
+    on<LoadUpdatedEventSheetEvent>(loadUpdatedEvent);
     on<ChangeStatusEventSheetEvent>(changeStatus);
     on<RemoveEventSheetEvent>(removeEvent);
     on<AlterEventSheetEvent>(alterEvent);
+  }
+
+  void loadUpdatedEvent(LoadUpdatedEventSheetEvent event, Emitter emit) async {
+    try {
+      emit(LoadingEventSheetState());
+
+      await Future.delayed(const Duration(seconds: 1));
+
+      final Map<String, dynamic> variables = {'eventId': event.eventId};
+
+      final data = await eventsRepository.getEventById(variables);
+      final eventModel = EventModel.fromMap(data);
+
+      emit(FormEventSheetState(eventModel: eventModel));
+    } catch (e) {
+      AlertsHelper.showWarnSnackBar('Não foi possível carregar o evento');
+      emit(DismissBottomSheetEventSheetState());
+    }
   }
 
   void changeStatus(ChangeStatusEventSheetEvent event, Emitter emit) async {
@@ -27,7 +45,7 @@ class EventSheetBloc extends Bloc<EventSheetEvent, EventSheetState> {
 
       final Map<String, dynamic> variables = {
         'eventId': event.eventModel.id,
-        'status': event.eventStatus.index,
+        'status': event.eventStatus.value,
       };
 
       await eventsRepository.changeStatus(variables);

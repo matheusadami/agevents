@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class DateHelper {
   static String getCurrentDateUSFormat([Duration? duration]) {
     final currentDate =
@@ -22,5 +24,25 @@ class DateHelper {
       int.parse(newDate[1]),
       int.parse(newDate[2]),
     );
+  }
+
+  static Future<String> openDatePicker(
+    String paramInitialDate,
+    BuildContext context,
+  ) async {
+    final initialDate = paramInitialDate.isEmpty
+        ? DateTime.now()
+        : DateHelper.createDateTimeFromBR(paramInitialDate);
+
+    final DateTime? picker = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(DateTime.now().year - 40),
+      lastDate: DateTime(DateTime.now().year + 40),
+    );
+
+    return picker != null
+        ? DateHelper.convertDateFromUSToBR(picker.toString())
+        : '';
   }
 }

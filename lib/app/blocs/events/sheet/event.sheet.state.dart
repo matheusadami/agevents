@@ -2,6 +2,8 @@ import 'package:agevents/app/models/event.model.dart';
 
 abstract class EventSheetState {}
 
+class InitialStateEventSheetState extends EventSheetState {}
+
 class FormEventSheetState extends EventSheetState {
   final EventModel eventModel;
   FormEventSheetState({required this.eventModel});

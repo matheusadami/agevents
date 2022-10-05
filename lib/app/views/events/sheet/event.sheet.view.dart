@@ -3,6 +3,7 @@ import 'package:agevents/app/blocs/events/sheet/event.sheet.event.dart';
 import 'package:agevents/app/blocs/events/sheet/event.sheet.state.dart';
 import 'package:agevents/app/models/event.model.dart';
 import 'package:agevents/app/views/events/sheet/components/confirm.dialog.remove.event.dart';
+import 'package:agevents/app/views/events/update/event.update.view.dart';
 import 'package:agevents/core/components/clip.event.date.dart';
 import 'package:agevents/core/components/clip.event.priority.dart';
 import 'package:agevents/core/components/clip.event.status.dart';
@@ -24,7 +25,10 @@ class EventSheetView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<EventSheetBloc>(
-      create: (context) => EventSheetBloc(eventModel),
+      create: (context) => EventSheetBloc()
+        ..add(
+          LoadUpdatedEventSheetEvent(eventId: eventModel.id),
+        ),
       child: BlocConsumer<EventSheetBloc, EventSheetState>(
         listener: (context, state) {
           if (state is DismissBottomSheetEventSheetState) {
@@ -81,6 +85,27 @@ class EventSheetBodyView extends StatelessWidget {
     if (isConfirmed ?? false) {
       final removeEvent = RemoveEventSheetEvent(eventModel: eventModel);
       eventSheetBloc.add(removeEvent);
+    }
+  }
+
+  void onTapUpdateEvent(BuildContext context) async {
+    final currentContext = context.read<EventSheetBloc>();
+    final eventUpdateArguments = EventUpdateViewArguments(
+      eventId: eventModel.id,
+    );
+
+    final isRefresh = await Navigator.pushNamed(
+      context,
+      '/update-event',
+      arguments: eventUpdateArguments,
+    ) as bool?;
+
+    if (isRefresh ?? false) {
+      final loadUpdatedEvent = LoadUpdatedEventSheetEvent(
+        eventId: eventUpdateArguments.eventId,
+      );
+
+      currentContext.add(loadUpdatedEvent);
     }
   }
 
@@ -158,7 +183,7 @@ class EventSheetBodyView extends StatelessWidget {
                   color: AppColors.white,
                 ),
                 label: 'Alterar',
-                onTap: () {},
+                onTap: () => onTapUpdateEvent(context),
               ),
             ),
             const SizedBox(width: 15),

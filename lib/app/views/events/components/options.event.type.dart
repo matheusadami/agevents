@@ -21,19 +21,19 @@ class OptionsEventTypeWidget extends StatelessWidget {
           ClipEventType(
             onTap: (eventType, context) => onChange(eventType),
             eventType: EventType.personalEvent,
-            isSelected: selectedType == EventType.personalEvent.index,
+            isSelected: selectedType == EventType.personalEvent.value,
           ),
           const SizedBox(width: 8),
           ClipEventType(
             onTap: (eventType, context) => onChange(eventType),
             eventType: EventType.workEvent,
-            isSelected: selectedType == EventType.workEvent.index,
+            isSelected: selectedType == EventType.workEvent.value,
           ),
           const SizedBox(width: 8),
           ClipEventType(
             onTap: (eventType, context) => onChange(eventType),
             eventType: EventType.studyEvent,
-            isSelected: selectedType == EventType.studyEvent.index,
+            isSelected: selectedType == EventType.studyEvent.value,
           ),
           const SizedBox(width: 8),
         ],

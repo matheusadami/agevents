@@ -17,17 +17,29 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class EventCreateView extends StatelessWidget {
-  const EventCreateView({super.key});
+class EventUpdateViewArguments {
+  final String eventId;
+
+  EventUpdateViewArguments({required this.eventId});
+}
+
+class EventUpdateView extends StatelessWidget {
+  const EventUpdateView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final params = ModalRoute.of(context)!.settings.arguments;
+    final eventArguments = (params as EventUpdateViewArguments);
+
     return BlocProvider<EventBloc>(
-      create: (context) => EventBloc(),
+      create: (context) => EventBloc()
+        ..add(
+          LoadEventUpdateEventEvent(eventArguments.eventId),
+        ),
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Novo Evento',
+            'Alterar Evento',
             style: AppTextStyles.mediumDarkSemiBold,
           ),
           systemOverlayStyle: const SystemUiOverlayStyle(
@@ -37,14 +49,17 @@ class EventCreateView extends StatelessWidget {
         ),
         body: BlocConsumer<EventBloc, EventState>(
           listener: (context, state) {
-            if (state is SuccessCreatedEventState) {
+            if (state is SuccessUpdatedEventState) {
               Navigator.pop<bool>(context, true);
             }
           },
           builder: (context, state) {
             switch (state.runtimeType) {
               case FormEventState:
-                return EventCreateFormBody(state: (state as FormEventState));
+                return EventUpdateFormBody(
+                  state: (state as FormEventState),
+                  eventArguments: eventArguments,
+                );
               case LoadingEventState:
                 return const CommonLoadingWidget();
             }
@@ -57,10 +72,15 @@ class EventCreateView extends StatelessWidget {
   }
 }
 
-class EventCreateFormBody extends StatelessWidget {
-  const EventCreateFormBody({super.key, required this.state});
+class EventUpdateFormBody extends StatelessWidget {
+  const EventUpdateFormBody({
+    super.key,
+    required this.state,
+    required this.eventArguments,
+  });
 
   final FormEventState state;
+  final EventUpdateViewArguments eventArguments;
 
   void onTapChooseDate(BuildContext context) async {
     state.dateController.text = await DateHelper.openDatePicker(
@@ -77,7 +97,7 @@ class EventCreateFormBody extends StatelessWidget {
     state.eventPriorityController.sink.add(eventPriority);
   }
 
-  dynamic onTapSave(BuildContext context) async {
+  dynamic onTapUpdate(BuildContext context) async {
     if (state.formKey.currentState!.validate()) {
       final currentContext = context.read<EventBloc>();
       final eventType = state.eventTypeController.valueOrNull;
@@ -96,7 +116,8 @@ class EventCreateFormBody extends StatelessWidget {
       }
 
       currentContext.add(
-        SubmitFormCreateEventEvent(
+        SubmitFormUpdateEventEvent(
+          id: eventArguments.eventId,
           name: state.nameController.text,
           date: state.dateController.text,
           description: state.descriptionController.text,
@@ -197,8 +218,8 @@ class EventCreateFormBody extends StatelessWidget {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: CommonButtonWidget(
-                    label: 'Salvar',
-                    onTap: () => onTapSave(context),
+                    label: 'Alterar',
+                    onTap: () => onTapUpdate(context),
                   ),
                 ),
               ),

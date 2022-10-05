@@ -25,3 +25,9 @@ class AlterEventSheetEvent extends EventSheetEvent {
 
   AlterEventSheetEvent({required this.context});
 }
+
+class LoadUpdatedEventSheetEvent extends EventSheetEvent {
+  String eventId;
+
+  LoadUpdatedEventSheetEvent({required this.eventId});
+}

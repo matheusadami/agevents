@@ -3,7 +3,6 @@ import 'package:agevents/app/views/events/my.events.list.view.dart';
 import 'package:agevents/app/views/feed/feed.view.dart';
 import 'package:agevents/app/views/home/components/animated.bottom.bar.dart';
 import 'package:agevents/app/views/home/components/bottom.navigation.bar.dart';
-import 'package:agevents/app/views/profile/profile.view.dart';
 import 'package:agevents/core/providers/navigation.bar.provider.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:flutter/material.dart';
@@ -36,11 +35,13 @@ class _HomeViewState extends State<HomeView> {
       text: "Meus Eventos",
       iconData: FontAwesomeIcons.barsStaggered,
     ),
+    /*
     BarItem(
       view: const ProfileView(),
       text: "Perfil",
       iconData: FontAwesomeIcons.solidUser,
     ),
+    */
   ];
 
   @override

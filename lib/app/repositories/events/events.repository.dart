@@ -60,6 +60,41 @@ class EventsRepository implements IEventsRepository {
   }
 
   @override
+  Future<Map<String, dynamic>> getEventById(
+    Map<String, dynamic> variables,
+  ) async {
+    final stringQuery = graphQLService.buildQueryOperation(
+      operationGraphQL: TypeOperationGraphQL.query,
+      operationName: 'GetEventById',
+      paramsOperation: {
+        r'$eventId': 'ID!',
+      },
+      eventName: 'getEventById',
+      paramsEvent: {
+        'eventId': r'$eventId',
+      },
+      returnFields: [
+        '_id',
+        'title',
+        'description',
+        'date',
+        'status',
+        'category',
+        'priority',
+      ],
+    );
+
+    final data = await graphQLService.query(stringQuery, variables);
+
+    Map<String, dynamic> event = {};
+    if (data.containsKey('getEventById')) {
+      event.addAll(Map<String, dynamic>.from(data['getEventById']));
+    }
+
+    return event;
+  }
+
+  @override
   Future<bool> changeStatus(Map<String, dynamic> variables) async {
     final stringMutation = graphQLService.buildQueryOperation(
       operationGraphQL: TypeOperationGraphQL.mutation,
@@ -132,6 +167,38 @@ class EventsRepository implements IEventsRepository {
         },
       },
       returnFields: ['_id'],
+    );
+
+    await graphQLService.mutation(stringMutation, variables);
+
+    return true;
+  }
+
+  @override
+  Future<bool> update(Map<String, dynamic> variables) async {
+    final stringMutation = graphQLService.buildQueryOperation(
+      operationGraphQL: TypeOperationGraphQL.mutation,
+      operationName: 'UpdateEventMobile',
+      paramsOperation: {
+        r'$eventId': 'ID!',
+        r'$title': 'String!',
+        r'$description': 'String!',
+        r'$date': 'String!',
+        r'$category': 'Int!',
+        r'$priority': 'Int!',
+      },
+      eventName: 'updateEventMobile',
+      paramsEvent: {
+        'eventId': r'$eventId',
+        'eventInputMobile': {
+          'title': r'$title',
+          'description': r'$description',
+          'date': r'$date',
+          'category': r'$category',
+          'priority': r'$priority',
+        },
+      },
+      returnFields: ['isUpdated'],
     );
 
     await graphQLService.mutation(stringMutation, variables);

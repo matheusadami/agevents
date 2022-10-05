@@ -20,13 +20,13 @@ class OptionsEventPriorityWidget extends StatelessWidget {
         children: [
           ClipEventPriority(
             onTap: (eventPriority, context) => onChange(eventPriority),
-            isSelected: selectedType == EventPriority.low.index,
+            isSelected: selectedType == EventPriority.low.value,
             eventPriority: EventPriority.low,
           ),
           const SizedBox(width: 8),
           ClipEventPriority(
             onTap: (eventPriority, context) => onChange(eventPriority),
-            isSelected: selectedType == EventPriority.high.index,
+            isSelected: selectedType == EventPriority.high.value,
             eventPriority: EventPriority.high,
           ),
         ],
