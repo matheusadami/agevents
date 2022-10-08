@@ -2,8 +2,8 @@ import 'package:agevents/core/theme/app.textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class EventsNotFound extends StatelessWidget {
-  const EventsNotFound({super.key});
+class CommonEventsNotFound extends StatelessWidget {
+  const CommonEventsNotFound({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,9 @@ import 'package:agevents/app/models/event.model.dart';
 import 'package:agevents/app/models/graphic.model.dart';
 import 'package:agevents/app/repositories/events/interface.events.repository.dart';
 import 'package:agevents/core/enums/event.status.dart';
+import 'package:agevents/core/enums/event.type.dart';
+import 'package:agevents/core/helpers/alerts.helper.dart';
+import 'package:agevents/core/helpers/custom.exception.dart';
 import 'package:agevents/core/helpers/event.helper.dart';
 import 'package:agevents/core/providers/auth.user.provider.dart';
 import 'package:agevents/core/services/navigation.service.dart';
@@ -20,39 +23,75 @@ class BoardBloc extends Bloc<BoardEvent, BoardState> {
   }
 
   void load(LoadBoardEvent event, Emitter emit) async {
-    emit(LoadingBoardState());
+    try {
+      emit(LoadingBoardState());
 
-    final Map<String, dynamic> variables = {
-      'userId': authUserProvider.currentUser.id,
-    };
-    final data = await eventsRepository.searchEventsFromUser(variables);
-    final events = data.map((e) => EventModel.fromMap(e)).toList();
+      // Only for showing the loading animation...
+      await Future.delayed(const Duration(seconds: 1));
 
-    final qtdeDoingEvents = EventHelper.getEventsByEventStatus(
-      events,
-      EventStatus.doing.value,
-    );
-    final qtdePendingEvents = EventHelper.getEventsByEventStatus(
-      events,
-      EventStatus.pending.value,
-    );
-    final qtdeCompletedEvents = EventHelper.getEventsByEventStatus(
-      events,
-      EventStatus.completed.value,
-    );
+      final GraphicModel graphicModel = GraphicModel(graphicSectionModels: []);
 
-    final graphicModel = GraphicModel(
-      percentagePersonalEvents: 30,
-      percentageStudyEvents: 40,
-      percentageWorkEvents: 40,
-    );
+      final Map<String, dynamic> variables = {
+        'userId': authUserProvider.currentUser.id,
+      };
+      final data = await eventsRepository.searchEventsFromUser(variables);
+      final events = data.map((e) => EventModel.fromMap(e)).toList();
 
-    emit(LoadedBoardState(
-      qtdeEvents: events.length,
-      qtdeDoingEvents: qtdeDoingEvents.length,
-      qtdePendingEvents: qtdePendingEvents.length,
-      qtdeCompletedEvents: qtdeCompletedEvents.length,
-      graphicModel: graphicModel,
-    ));
+      final personalEvents = EventHelper.getEventsByType(
+        events,
+        EventType.personalEvent.value,
+      );
+      graphicModel.pushSection(
+        eventType: EventType.personalEvent,
+        qtdeEvents: events.length,
+        qtdePercentageEvents: personalEvents.length,
+      );
+
+      final studyType = EventHelper.getEventsByType(
+        events,
+        EventType.studyEvent.value,
+      );
+      graphicModel.pushSection(
+        eventType: EventType.studyEvent,
+        qtdeEvents: events.length,
+        qtdePercentageEvents: studyType.length,
+      );
+
+      final workType = EventHelper.getEventsByType(
+        events,
+        EventType.workEvent.value,
+      );
+      graphicModel.pushSection(
+        eventType: EventType.workEvent,
+        qtdeEvents: events.length,
+        qtdePercentageEvents: workType.length,
+      );
+
+      final doingEvents = EventHelper.getEventsByStatus(
+        events,
+        EventStatus.doing.value,
+      );
+      final pendingEvents = EventHelper.getEventsByStatus(
+        events,
+        EventStatus.pending.value,
+      );
+      final completedEvents = EventHelper.getEventsByStatus(
+        events,
+        EventStatus.completed.value,
+      );
+
+      final loadedBoardEvent = LoadedBoardState(
+        qtdeEvents: events.length,
+        graphicModel: graphicModel,
+        qtdeDoingEvents: doingEvents.length,
+        qtdePendingEvents: pendingEvents.length,
+        qtdeCompletedEvents: completedEvents.length,
+      );
+
+      emit(loadedBoardEvent);
+    } on CustomException catch (e) {
+      AlertsHelper.showWarnSnackBar(e.message);
+      emit(ExceptionBoardState(e.message));
+    }
   }
 }

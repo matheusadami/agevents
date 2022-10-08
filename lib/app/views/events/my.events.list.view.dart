@@ -4,10 +4,10 @@ import 'package:agevents/app/blocs/events/my.events.state.dart';
 import 'package:agevents/app/models/event.model.dart';
 import 'package:agevents/app/views/events/components/button.filter.events.dart';
 import 'package:agevents/app/views/events/components/button.remove.filters.events.dart';
-import 'package:agevents/app/views/events/components/error.message.loading.events.dart';
-import 'package:agevents/app/views/events/components/events.not.found.dart';
 import 'package:agevents/app/views/events/components/filter.events.dialog.dart';
 import 'package:agevents/app/views/events/sheet/event.sheet.view.dart';
+import 'package:agevents/core/components/common.error.message.dart';
+import 'package:agevents/core/components/common.events.not.found.dart';
 import 'package:agevents/core/components/common.loading.widget.dart';
 import 'package:agevents/core/components/event.list.view.dart';
 import 'package:agevents/core/theme/app.colors.dart';
@@ -66,9 +66,7 @@ class _MyEventsListViewState extends State<MyEventsListView> {
                     rootContext: context,
                   );
                 case ExceptionMyEventsState:
-                  return const Center(
-                    child: ErrorMessageLoadingEvents(),
-                  );
+                  return const ErrorMessageLoadingEvents();
               }
             }()),
             floatingActionButton: FloatingActionButton(
@@ -81,6 +79,30 @@ class _MyEventsListViewState extends State<MyEventsListView> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class ErrorMessageLoadingEvents extends StatelessWidget {
+  const ErrorMessageLoadingEvents({Key? key}) : super(key: key);
+
+  Future<void> onRefreshEvents(BuildContext context) async {
+    final searchEvents = SearchMyEventsEvent(
+      paramName: "",
+      paramFinalDate: "",
+      paramInitialDate: "",
+    );
+
+    context.read<MyEventsBloc>().add(searchEvents);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () => onRefreshEvents(context),
+      child: const CommonErrorMessage(
+        message: 'Não foi possível carregar seus eventos.',
       ),
     );
   }
@@ -195,7 +217,7 @@ class MyEventsViewBody extends StatelessWidget {
                           events: events,
                           isShowFavorite: false,
                         )
-                      : const EventsNotFound(),
+                      : const CommonEventsNotFound(),
                 ),
               ),
             ],

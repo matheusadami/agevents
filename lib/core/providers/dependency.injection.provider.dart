@@ -1,4 +1,3 @@
-import 'package:agevents/app/blocs/board/board.bloc.dart';
 import 'package:agevents/app/blocs/graphic/graphic.bloc.dart';
 import 'package:agevents/app/blocs/signin/signin.bloc.dart';
 import 'package:agevents/app/blocs/signup/signup.bloc.dart';
@@ -71,9 +70,6 @@ class DependencyInjectionProvider extends StatelessWidget {
           ),
           BlocProvider<SignUpBloc>(
             create: (context) => SignUpBloc(),
-          ),
-          BlocProvider<BoardBloc>(
-            create: (context) => BoardBloc(),
           ),
           BlocProvider<GraphicBloc>(
             create: (context) => GraphicBloc(),
