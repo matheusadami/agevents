@@ -1,16 +1,9 @@
-# agevents
+# AgEvents
 
-A new Flutter project.
+Aplicativo para controle de eventos e compromissos pessoais desenvolvido durante o Trabalho de Graduação na instituição FATEC.
 
-## Getting Started
+## Como instalar o aplicativo? :iphone:
 
-This project is a starting point for a Flutter application.
+Para instalar o aplicativo basta clicar nesse [link](https://drive.google.com/drive/folders/1IBf9fOcAE6cu8o39IHK4Wo20oJcSxyhe?usp=sharing).
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Ao fazer isso, você será redirecionado para uma pasta compartilhada do qual terá acesso ao APK do AgEvents, restando somente baixar o arquivo em questão e instalá-lo em seu dispositivo móvel para gerenciaar seus eventos e compromissos pessoais :wink:.
