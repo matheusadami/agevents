@@ -27,12 +27,21 @@ dependencies:
   lottie: ^1.4.3
   rxdart: ^0.27.5
   collection: ^1.16.0
+  flutter_launcher_icons: ^0.10.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   
   flutter_lints: ^2.0.0
+
+flutter_icons:
+  image_path: "lib/assets/app/icon.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "lib/assets/app/icon.png"
 
 flutter:
 
