@@ -1,4 +1,4 @@
-import 'package:agevents/app/views/board/components/badge.dart';
+import 'package:agevents/app/views/board/components/badge.dart' as badge;
 import 'package:agevents/core/enums/event.type.dart';
 import 'package:agevents/core/theme/app.colors.dart';
 import 'package:collection/collection.dart';
@@ -75,7 +75,7 @@ class GraphicModel {
             fontWeight: FontWeight.bold,
             color: AppColors.white,
           ),
-          badgeWidget: Badge(
+          badgeWidget: badge.Badge(
             size: badgeSize,
             eventType: section.eventType,
           ),
